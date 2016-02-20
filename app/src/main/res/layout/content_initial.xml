@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.apps.alvarobanofos.presentview.InitialActivity"
+    tools:showIn="@layout/activity_initial">
+
+    <FrameLayout
+        android:id="@+id/layoutInitial"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ny_bg"
+            android:scaleType = "centerCrop"
+            android:id="@+id/imageView" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/iniciar_sesion"
+                android:id="@+id/btnIniciarSesion"
+                android:layout_weight="0.5"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@drawable/secondary_button_selector"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/registrarse"
+                android:id="@+id/btnRegistro"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@drawable/primary_button_selector"
+                android:textColor="@color/colorLights"
+                android:layout_weight="0.5" />
+
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>
