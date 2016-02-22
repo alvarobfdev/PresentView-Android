@@ -13,9 +13,30 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"
-            android:textColor="#ffffff" />
+            android:layout_height="25dp"
+            android:text="@string/iniciar_sesion"
+            android:textColor="#ffffff"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textAlignment="center"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:textAllCaps="true"
+            android:layout_marginTop="10dp"
+            android:id="@+id/textView" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="38dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/google_signin_button_text"
+            />
     </RelativeLayout>
 
 </FrameLayout>

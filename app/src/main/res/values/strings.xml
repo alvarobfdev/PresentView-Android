@@ -3,6 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="iniciar_sesion">Iniciar sesión</string>
     <string name="registrarse">Registrarse</string>
+    <string name="google_signin_button_text">Iniciar sesión con Google</string>
+    <string name="error_404">Ops! Hay algún cable suelto.\nEstamos trabajando en ello!</string>
+    <string name="error_not_network">Ops! No se ha detectado conexión a internet!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
