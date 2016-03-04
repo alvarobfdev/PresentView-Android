@@ -9,10 +9,13 @@ import org.json.JSONObject;
  */
 public class PresentViewApiClient {
 
-    public static final int LOGIN_BY_GOOGLE_OR_REGISTER_API = 1;
+    public static final int LOGIN_BY_GOOGLE= 1;
+    public static final int REGISTER_FROM_GOOGLE= 2;
+
 
     private JsonApiRequestListener jsonApiRequestListener;
     private Context context;
+
     public PresentViewApiClient(Context context, JsonApiRequestListener jsonApiRequestListener) {
         this.context = context;
         this.jsonApiRequestListener = jsonApiRequestListener;

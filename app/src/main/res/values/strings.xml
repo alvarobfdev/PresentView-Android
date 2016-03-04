@@ -4,7 +4,19 @@
     <string name="iniciar_sesion">Iniciar sesión</string>
     <string name="registrarse">Registrarse</string>
     <string name="google_signin_button_text">Iniciar sesión con Google</string>
+    <string name="birthdate">Fecha de nacimiento</string>
+    <string name="provincia">Provincia</string>
+    <string name="city">Ciudad</string>
+    <string name="select_provincia">Seleccione Provincia</string>
+    <string name="select_municipio">Seleccione Municipio</string>
+    <string name="complete_data">Completar perfil</string>
+    <string name="fail_form">Faltan datos por completar!</string>
+
+
+
     <string name="error_404">Ops! Hay algún cable suelto.\nEstamos trabajando en ello!</string>
+    <string name="error_400">Ops! Fallo al conectar!\nProbablemente se esté haciendo un uso indebido de la aplicación</string>
+
     <string name="error_not_network">Ops! No se ha detectado conexión a internet!</string>
 
     <!-- TODO: Remove or change this placeholder text -->

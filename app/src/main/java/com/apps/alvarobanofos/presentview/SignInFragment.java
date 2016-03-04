@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.alvarobanofos.presentview.Helpers.Notifications;
+import com.apps.alvarobanofos.presentview.Helpers.Registration;
+import com.apps.alvarobanofos.presentview.PresentViewApiClient.LoginByGoogleResult;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.PresentViewApiClient;
-import com.apps.alvarobanofos.presentview.PresentViewApiClient.UserAccount;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -40,15 +42,26 @@ public class SignInFragment extends Fragment {
 
     private static final String TAG = "SignInFragment";
     private static final int RC_SIGN_IN = 9001;
+    public static final int COMPLETE_DATA = 1;
+
     private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInAccount googleAcct;
+    private Person person;
+    private String simId;
 
     private OnFragmentInteractionListener mListener;
 
     private PresentViewApiClient.JsonApiRequestListener resultPVGoogleAPI = new PresentViewApiClient.JsonApiRequestListener() {
         @Override
         public void jsonApiRequestResult(Object object) {
-            UserAccount userAccount = (UserAccount) object;
-            Log.e("REGISTER", userAccount.isRegistered()+"");
+            LoginByGoogleResult loginByGoogleResult = (LoginByGoogleResult) object;
+            if(loginByGoogleResult.getStatus() == 1) {
+                if(!loginByGoogleResult.isRegistered()) {
+
+                    Registration.getInstance().registerByGoogleCompleteData(googleAcct, person, simId, mListener);
+                }
+
+            }
         }
     };
 
@@ -109,7 +122,7 @@ public class SignInFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            //mListener.onCompleteDataInteraction(uri);
         }
     }
 
@@ -145,7 +158,7 @@ public class SignInFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(int action, Object... params);
     }
 
     private void googleSignIn() {
@@ -172,15 +185,25 @@ public class SignInFragment extends Fragment {
             PresentViewApiClient pApiClient = new PresentViewApiClient(getActivity().getApplicationContext()
                     , resultPVGoogleAPI);
 
-            Map < String, String > json = new HashMap<>();
-            json.put("accountId", acct.getId());
-            pApiClient.requestJsonApi(PresentViewApiClient.LOGIN_BY_GOOGLE_OR_REGISTER_API, new JSONObject(json));
 
-            Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            if(person != null) {
-                int gender = person.getGender();
-                String birthdate = person.getBirthday();
+            Map < String, String > json = new HashMap<>();
+            this.googleAcct = acct;
+            json.put("accountId", acct.getId());
+
+            TelephonyManager mTelephonyMgr = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+            simId = mTelephonyMgr.getSimSerialNumber();
+            json.put("simId", simId);
+
+            if(simId != null) {
+                person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                pApiClient.requestJsonApi(PresentViewApiClient.LOGIN_BY_GOOGLE, new JSONObject(json));
             }
+
+            else {
+                Notifications.singleToast(getActivity().getApplicationContext(), "Su teléfono de contener una tarjeta sim");
+            }
+
+
         } else {
             Notifications.singleToast(getActivity().getApplicationContext(), "Fallo al utenticar");
         }

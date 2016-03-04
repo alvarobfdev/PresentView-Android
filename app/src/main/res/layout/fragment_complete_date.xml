@@ -1,0 +1,88 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CompleteDataFragment"
+    android:background="@color/colorPrimaryDark">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp">
+
+
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/et_birthdate"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:drawableLeft="@drawable/ic_date_range_white_24dp"
+            android:hint="@string/birthdate"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            style="@style/itemsForms"
+             />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80d3d3d3"
+            android:id="@+id/separator"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/et_birthdate"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Spinner
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sp_provincias"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/separator"
+            style="@style/itemsForms"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80d3d3d3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/sp_provincias"
+            android:layout_alignParentRight="true"
+            android:id="@+id/separator1"
+            android:layout_alignParentEnd="true" />
+
+        <Spinner
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sp_municipios"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/separator1"
+            style="@style/itemsForms"
+            />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:text="@string/complete_data"
+            android:id="@+id/btnCompleteData"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/secondary_button_selector"
+            android:layout_below="@id/sp_municipios"
+            />
+
+
+    </RelativeLayout>
+</FrameLayout>

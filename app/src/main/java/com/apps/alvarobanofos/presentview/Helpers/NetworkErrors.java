@@ -1,6 +1,7 @@
 package com.apps.alvarobanofos.presentview.Helpers;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.apps.alvarobanofos.presentview.R;
 
@@ -13,6 +14,12 @@ public class NetworkErrors {
         switch (statusCode) {
             case 404:
                 Notifications.singleToast(context, context.getString(R.string.error_404));
+                break;
+            case 500:
+                Notifications.singleToast(context, context.getString(R.string.error_404));
+                break;
+            case 400:
+                Notifications.singleToast(context, context.getString(R.string.error_400), Toast.LENGTH_LONG);
                 break;
             case -1:
                 Notifications.singleToast(context, context.getString(R.string.error_not_network));

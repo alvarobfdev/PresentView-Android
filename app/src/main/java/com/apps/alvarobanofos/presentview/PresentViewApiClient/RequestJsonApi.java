@@ -2,6 +2,7 @@ package com.apps.alvarobanofos.presentview.PresentViewApiClient;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -37,8 +38,11 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
 
 
             switch (apiType) {
-                case PresentViewApiClient.LOGIN_BY_GOOGLE_OR_REGISTER_API:
-                    loginOrRegisterByGoogle();
+                case PresentViewApiClient.LOGIN_BY_GOOGLE:
+                    loginByGoogle();
+                    break;
+                case PresentViewApiClient.REGISTER_FROM_GOOGLE:
+                    registerFromGoogle();
                     break;
             }
         } catch (Exception e) {
@@ -48,10 +52,21 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
         return null;
     }
 
-    private void loginOrRegisterByGoogle() throws JSONException {
+    private void loginByGoogle() throws JSONException {
 
-        url = "http://abf-ubuntu.cloudapp.net/PresentView/public/api/login-or-register-google";
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/login-by-google", LoginByGoogleResult.class);
 
+    }
+
+    private void registerFromGoogle() {
+
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/register-from-google", RegisterFromGoogleResult.class);
+
+    }
+
+    private void throwRequest(String url, final Class returnClass) {
+
+        Log.d(TAG, jsonData.toString());
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.POST, url, jsonData, new Response.Listener<JSONObject>() {
@@ -59,13 +74,14 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
                     @Override
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
-                        UserAccount userAccount = gson.fromJson(response.toString(), UserAccount.class);
-                        jsonApiRequestListener.jsonApiRequestResult(userAccount);
+                        Object objectResult = gson.fromJson(response.toString(), returnClass);
+                        jsonApiRequestListener.jsonApiRequestResult(objectResult);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+
                         if(error.networkResponse == null) {
                             NetworkErrors.throwNetworkErrors(context, -1);
                         }
@@ -74,7 +90,5 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
                 });
 
         SingletonRequestQueue.getInstance(context).add(jsObjRequest);
-
-
     }
 }

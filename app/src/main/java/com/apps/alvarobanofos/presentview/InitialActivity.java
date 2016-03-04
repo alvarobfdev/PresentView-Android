@@ -1,30 +1,58 @@
 package com.apps.alvarobanofos.presentview;
 
+import android.Manifest;
 import android.app.FragmentTransaction;
-import android.net.Uri;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.apps.alvarobanofos.presentview.Helpers.Registration;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
+import java.util.ArrayList;
+
 public class InitialActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, CompleteDataFragment.OnCompleteDataFragmentListener {
+
+    private final static int REQUEST_PERMISSIONS_ID = 101;
+    public final static int REGISTER_FROM_GOOGLE = 1;
+    public final static int REGISTER_FROM_FORM = 2;
 
     Button btnSignIn;
     private GoogleApiClient mGoogleApiClient;
+    private int typeRegister;
+
+    private String userGoogleId;
+    private String userEmail;
+    private  String simId;
+    private int userGender;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(checkAllPermissions()) {
+
+            continueCreating();
+        }
+
+
+
+    }
+
+    private void continueCreating() {
+
         setContentView(R.layout.activity_initial);
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -81,9 +109,23 @@ public class InitialActivity extends AppCompatActivity implements SignInFragment
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+    private void startCompleteDataFragment(String backStack) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.addToBackStack(backStack);
+        fragmentTransaction.replace(R.id.layoutInitial, CompleteDataFragment.newInstance(), "completeDataFragment");
+        fragmentTransaction.commit();
+    }
 
+    @Override
+    public void onFragmentInteraction(int action, Object... params) {
+        if(action == SignInFragment.COMPLETE_DATA) {
+            typeRegister = (int) params[0];
+            userGoogleId = (String) params[1];
+            userEmail = (String) params[2];
+            userGender = (int) params[3];
+            simId = (String) params[4];
+            startCompleteDataFragment("signInFragment");
+        }
     }
 
     @Override
@@ -99,5 +141,62 @@ public class InitialActivity extends AppCompatActivity implements SignInFragment
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    private boolean checkAllPermissions() {
+
+        ArrayList<String> permissionToRequest = new ArrayList<String>();
+
+        boolean result = true;
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permissionToRequest.add(Manifest.permission.READ_PHONE_STATE);
+            result = false;
+        }
+
+        if(permissionToRequest.size() > 0)
+            ActivityCompat.requestPermissions(this,
+                    permissionToRequest.toArray(new String[0]),
+                    REQUEST_PERMISSIONS_ID);
+
+        return result;
+    }
+
+    /* Metodo que recoge el resultado asincrono de la
+        solicitud de permisos en caso de ser aceptados
+        reinicia actividad para volver a cargar elementos
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean permission_granted = true;
+        if(requestCode == REQUEST_PERMISSIONS_ID) {
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    permission_granted = false;
+                }
+            }
+        }
+
+        if(permission_granted) {
+            continueCreating();
+        }
+
+    }
+
+    @Override
+    public void onCompleteDataInteraction(Object... paramsForm) {
+        if(typeRegister == REGISTER_FROM_GOOGLE) {
+            Object[] params = {
+                    userGoogleId,
+                    userEmail,
+                    userGender,
+                    (String) paramsForm[0],
+                    (int) paramsForm[1],
+                    (int) paramsForm[2],
+                    simId
+            };
+            Registration.getInstance().registerWithGoogle(this, params);
+        }
     }
 }
