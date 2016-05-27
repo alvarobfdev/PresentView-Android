@@ -5,7 +5,8 @@ import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
-public class InitialActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener,
+public class InitialActivity extends FragmentActivity implements SignInFragment.OnFragmentInteractionListener,
         GoogleApiClient.OnConnectionFailedListener, CompleteDataFragment.OnCompleteDataFragmentListener {
 
     private final static int REQUEST_PERMISSIONS_ID = 101;
@@ -56,10 +57,6 @@ public class InitialActivity extends AppCompatActivity implements SignInFragment
     @Override
     protected void onResume() {
         super.onResume();
-
-        if(!creating) {
-            finish();
-        }
     }
 
     @Override
@@ -176,6 +173,11 @@ public class InitialActivity extends AppCompatActivity implements SignInFragment
             result = false;
         }
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SET_ALARM) != PackageManager.PERMISSION_GRANTED) {
+            permissionToRequest.add(Manifest.permission.SET_ALARM);
+            result = false;
+        }
+
         if(permissionToRequest.size() > 0) {
             ActivityCompat.requestPermissions(this,
                     permissionToRequest.toArray(new String[0]),
@@ -221,5 +223,14 @@ public class InitialActivity extends AppCompatActivity implements SignInFragment
             };
             Registration.getInstance().registerWithGoogle(this, params);
         }
+    }
+
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("InitialActivity", "DESTROY");
     }
 }

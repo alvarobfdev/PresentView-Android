@@ -52,11 +52,11 @@ public class Login {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", user);
         intent.putExtras(bundle);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
-    public void loginIfUserLogged(Context context, InitialActivity activity) {
+    public void  loginIfUserLogged(Context context, InitialActivity activity) {
 
         this.context = context;
         this.activity = activity;

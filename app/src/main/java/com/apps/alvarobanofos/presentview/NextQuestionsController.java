@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.apps.alvarobanofos.presentview.Adapters.QuestionsRecyclerAdapter;
 import com.apps.alvarobanofos.presentview.Helpers.DateParser;
@@ -32,6 +33,8 @@ public class NextQuestionsController extends CustomController {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private RelativeLayout noQuestionsLayout;
+
     Timer timer = null;
 
     public NextQuestionsController(Activity activity, ViewGroup container) {
@@ -47,7 +50,7 @@ public class NextQuestionsController extends CustomController {
         this.view = view;
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-
+        noQuestionsLayout = (RelativeLayout) view.findViewById(R.id.noQuestionsLayout);
 
         timer = new Timer();
         loadList();
@@ -82,6 +85,9 @@ public class NextQuestionsController extends CustomController {
 
         mAdapter = new QuestionsRecyclerAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
+        if(mAdapter.getItemCount() > 0) {
+            noQuestionsLayout.setVisibility(View.GONE);
+        }
 
     }
 

@@ -223,8 +223,8 @@ public class SignInFragment extends Fragment {
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            PresentViewApiClient pApiClient = new PresentViewApiClient(getActivity().getApplicationContext()
-                    , resultPVGoogleAPI);
+
+            PresentViewApiClient pApiClient = new PresentViewApiClient(activity, resultPVGoogleAPI);
 
 
             Map < String, String > json = new HashMap<>();
@@ -235,10 +235,13 @@ public class SignInFragment extends Fragment {
             simId = mTelephonyMgr.getSimSerialNumber();
             json.put("simId", simId);
 
+
             if(simId != null) {
                 person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
                 pApiClient.requestJsonApi(PresentViewApiClient.LOGIN_BY_GOOGLE, new JSONObject(json));
             }
+
+
 
             else {
                 Notifications.singleToast(getActivity().getApplicationContext(), "Su teléfono debe contener una tarjeta sim");
@@ -248,6 +251,7 @@ public class SignInFragment extends Fragment {
         } else {
             Notifications.singleToast(getActivity().getApplicationContext(), "Fallo al utenticar");
         }
+        Log.d("HERE", "HERE");
     }
 
     protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {

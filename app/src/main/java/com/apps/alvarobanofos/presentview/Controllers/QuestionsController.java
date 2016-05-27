@@ -1,5 +1,7 @@
 package com.apps.alvarobanofos.presentview.Controllers;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,6 +18,7 @@ import com.apps.alvarobanofos.presentview.Models.Question;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.GetNextQuestionsResult;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.PresentViewApiClient;
 import com.apps.alvarobanofos.presentview.Providers.PresentViewContentProvider;
+import com.apps.alvarobanofos.presentview.Receivers.OnetimeAlarmReceiver;
 
 import org.json.JSONObject;
 
@@ -29,7 +32,7 @@ import java.util.Map;
 public class QuestionsController {
     private static QuestionsController questionsController = null;
     private Context context;
-
+    public static final int REQUEST_CODE = 12001;
 
     public static QuestionsController getInstance(Context context) {
         if(questionsController == null)
@@ -133,8 +136,9 @@ public class QuestionsController {
             values.put("finished", 1);
         else values.put("finished", 0);
         resolver.insert(PresentViewContentProvider.CONTENT_URI_QUESTION, values);
-
         addAnswers(question);
+        setAlarm(question);
+
     }
 
     private void addAnswers(Question question) {
@@ -209,6 +213,22 @@ public class QuestionsController {
         }
 
         return arrayAdapter;
+    }
+
+    private void setAlarm(Question question){
+
+        Intent intent = new Intent(context, OnetimeAlarmReceiver.class);
+        intent.putExtra("questionTitle", question.getTitle());
+        intent.putExtra("questionId", question.getId());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        long alarm_time = question.getTime_ini().getTime()-30*1000;
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarm_time , pendingIntent);
+        System.out.println("Time Total ----- "+(alarm_time));
+
     }
 
 
