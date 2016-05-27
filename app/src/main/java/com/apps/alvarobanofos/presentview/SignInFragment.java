@@ -1,5 +1,6 @@
 package com.apps.alvarobanofos.presentview;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +11,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.apps.alvarobanofos.presentview.Helpers.Login;
 import com.apps.alvarobanofos.presentview.Helpers.Notifications;
 import com.apps.alvarobanofos.presentview.Helpers.Registration;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.LoginByGoogleResult;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.PresentViewApiClient;
+import com.apps.alvarobanofos.presentview.PresentViewApiClient.StandardLoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -48,6 +53,10 @@ public class SignInFragment extends Fragment {
     private GoogleSignInAccount googleAcct;
     private Person person;
     private String simId;
+    private EditText etUser;
+    private EditText etPass;
+    private Context context;
+    private Activity activity;
 
     private OnFragmentInteractionListener mListener;
 
@@ -59,6 +68,28 @@ public class SignInFragment extends Fragment {
                 if(!loginByGoogleResult.isRegistered()) {
 
                     Registration.getInstance().registerByGoogleCompleteData(googleAcct, person, simId, mListener);
+                }
+                else {
+                    Login.getInstance().loginUser(activity, loginByGoogleResult.getUser());
+                }
+
+            }
+        }
+    };
+
+    private PresentViewApiClient.JsonApiRequestListener resultPVStandardReg = new PresentViewApiClient.JsonApiRequestListener() {
+        @Override
+        public void jsonApiRequestResult(Object object) {
+            StandardLoginResult standardLoginResult = (StandardLoginResult) object;
+            if(standardLoginResult.getStatus() == 1) {
+                if(!standardLoginResult.isRegistered()) {
+                    Notifications.singleToast(context, "Usuario y/o contraseña no válidos!");
+                }
+                else if (standardLoginResult.is_google_account()) {
+                    Notifications.singleToast(context, "Modo de autentificación erróneo!");
+                }
+                else {
+                    Login.getInstance().loginUser(activity, standardLoginResult.getUser());
                 }
 
             }
@@ -96,6 +127,8 @@ public class SignInFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGoogleApiClient = getmGoogleApiClient();
+        context = getActivity().getApplicationContext();
+        activity = getActivity();
     }
 
     @Override
@@ -105,13 +138,21 @@ public class SignInFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
         SignInButton googleButton = (SignInButton) view.findViewById(R.id.google_sign_in_button);
-
         setGooglePlusButtonText(googleButton, getString(R.string.google_signin_button_text));
-
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 googleSignIn();
+            }
+        });
+        Button signInBtn = (Button) view.findViewById(R.id.btnSignIn);
+        etUser = (EditText) view.findViewById(R.id.et_user);
+        etPass = (EditText) view.findViewById(R.id.et_pass);
+
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                standardSignIn();
             }
         });
 
@@ -200,7 +241,7 @@ public class SignInFragment extends Fragment {
             }
 
             else {
-                Notifications.singleToast(getActivity().getApplicationContext(), "Su teléfono de contener una tarjeta sim");
+                Notifications.singleToast(getActivity().getApplicationContext(), "Su teléfono debe contener una tarjeta sim");
             }
 
 
@@ -221,4 +262,29 @@ public class SignInFragment extends Fragment {
             }
         }
     }
+
+
+
+    private void standardSignIn() {
+        if(etPass.getText().length() < 3 || etUser.getText().length() < 3) {
+            Notifications.singleToast(context, "Datos incorrectos!");
+        }
+        else {
+            Map < String, String > json = new HashMap<>();
+            json.put("user", etUser.getText().toString());
+            json.put("pass", etPass.getText().toString());
+
+            PresentViewApiClient presentViewApiClient = new PresentViewApiClient(
+                    getActivity().getApplicationContext(),
+                    resultPVStandardReg
+            );
+
+            presentViewApiClient.requestJsonApi(PresentViewApiClient.STANDARD_LOGIN, new JSONObject(json));
+        }
+
+
+
+
+    }
+
 }

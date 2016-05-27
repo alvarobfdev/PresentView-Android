@@ -1,5 +1,7 @@
 package com.apps.alvarobanofos.presentview.PresentViewApiClient;
 
+import com.apps.alvarobanofos.presentview.Models.User;
+
 /**
  * Created by alvarobanofos on 20/2/16.
  */
@@ -7,14 +9,14 @@ public class LoginByGoogleResult extends ApiResult {
 
 
     private boolean registered;
-    private String token;
+    private User user;
 
-    public String getToken() {
-        return token;
+    public User getUser() {
+        return user;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public boolean isRegistered() {

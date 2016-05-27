@@ -37,6 +37,66 @@
             android:layout_alignParentEnd="true"
             android:text="@string/google_signin_button_text"
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ó"
+            android:id="@+id/textView2"
+            android:layout_below="@+id/google_sign_in_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/abc_select_dialog_padding_start_material" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/et_user"
+            android:hint="@string/user"
+            android:inputType="textEmailAddress"
+            style="@style/itemsForms"
+            android:layout_below="@+id/textView2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80d3d3d3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/et_user"
+            android:layout_alignParentRight="true"
+            android:id="@+id/separator1"
+            android:layout_alignParentEnd="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/et_pass"
+            android:inputType="textPassword"
+            android:layout_below="@+id/separator1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:hint="@string/pass"
+            style="@style/itemsForms"
+            />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:text="@string/iniciar_sesion"
+            android:id="@+id/btnSignIn"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/secondary_button_selector"
+            android:layout_below="@+id/et_pass"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
 </FrameLayout>

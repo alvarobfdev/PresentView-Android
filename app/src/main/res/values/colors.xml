@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#333333</color>
+    <color name="colorSecondaryDark">#222222</color>
     <color name="colorPrimaryDark">#111111</color>
+    <color name="colorDark">#000000</color>
+
     <color name="colorAccent">#98B249</color>
     <color name="colorPrimaryButton">#241929</color>
     <color name="colorLights">#F4EBE6</color>
+    <color name="colorSecondLights">#565454</color>
     <color name="colorDarks">#36401A</color>
     <color name="colorPrimaryButtonPressed">#261E29</color>
     <color name="colorSecondaryButton">#98B249</color>

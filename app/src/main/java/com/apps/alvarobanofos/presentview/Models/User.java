@@ -1,13 +1,29 @@
 package com.apps.alvarobanofos.presentview.Models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by alvarobanofos on 4/3/16.
  */
-public class User {
-    String email, token;
-    int gender, provincia, ciudad, sim_id;
+public class User implements Serializable {
+
+    //Constantes columnas user SQLITE
+
+    public static int ID_COLUMN = 0;
+    public static int GOOGLE_ID_COLUMN = 1;
+    public static int EMAIL_COLUMN = 2;
+    public static int GENDER_COLUMN = 3;
+    public static int PROVINCIA_COLUMN = 4;
+    public static int CIUDAD_COLUMN = 5;
+    public static int BIRTHDATE_COLUMN = 6;
+    public static int SIM_ID_COLUMN = 7;
+    public static int TOKEN_COLUMN = 8;
+
+
+
+    String google_id, email, sim_id, token;
+    int gender, provincia, ciudad;
     Date birthdate;
 
     public String getEmail() {
@@ -50,11 +66,11 @@ public class User {
         this.ciudad = ciudad;
     }
 
-    public int getSim_id() {
+    public String getSim_id() {
         return sim_id;
     }
 
-    public void setSim_id(int sim_id) {
+    public void setSim_id(String sim_id) {
         this.sim_id = sim_id;
     }
 
@@ -66,5 +82,11 @@ public class User {
         this.birthdate = birthdate;
     }
 
+    public String getGoogle_id() {
+        return google_id;
+    }
 
+    public void setGoogle_id(String google_id) {
+        this.google_id = google_id;
+    }
 }

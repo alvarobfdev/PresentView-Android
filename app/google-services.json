@@ -1,15 +1,14 @@
 {
   "project_info": {
-    "project_id": "presentview-1193",
     "project_number": "1004094956817",
-    "name": "PresentView"
+    "firebase_url": "https://presentview-1193.firebaseio.com",
+    "project_id": "presentview-1193",
+    "storage_bucket": "presentview-1193.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:1004094956817:android:4513b0c822384da8",
-        "client_id": "android:com.apps.alvarobanofos.presentview",
-        "client_type": 1,
         "android_client_info": {
           "package_name": "com.apps.alvarobanofos.presentview"
         }
@@ -22,23 +21,28 @@
             "package_name": "com.apps.alvarobanofos.presentview",
             "certificate_hash": "E45231B7630E08A2AFD68577BA044DED2F233A53"
           }
+        },
+        {
+          "client_id": "1004094956817-ue9ll9jcgntuiulfpqirv90p895p3f1c.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1004094956817-s558d6mobo9s839b4emjkmmr2kbc24pl.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
-      "api_key": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Max62sXT2RqXIZdzKy3PqVRWRMGF4Ko"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
         },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
-        },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 2
         },
         "ads_service": {
           "status": 1
@@ -48,28 +52,28 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:1004094956817:android:f36173e948059ccb",
-        "client_id": "android:gcm.play.android.samples.com.gcmquickstart",
-        "client_type": 1,
         "android_client_info": {
           "package_name": "gcm.play.android.samples.com.gcmquickstart"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1004094956817-ue9ll9jcgntuiulfpqirv90p895p3f1c.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1004094956817-s558d6mobo9s839b4emjkmmr2kbc24pl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [],
       "services": {
         "analytics_service": {
           "status": 1
         },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
-        },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 1
         },
         "ads_service": {
           "status": 1
@@ -77,6 +81,5 @@
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

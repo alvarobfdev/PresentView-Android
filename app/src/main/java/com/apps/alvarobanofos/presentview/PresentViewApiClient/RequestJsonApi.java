@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.apps.alvarobanofos.presentview.Helpers.NetworkErrors;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +45,21 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
                 case PresentViewApiClient.REGISTER_FROM_GOOGLE:
                     registerFromGoogle();
                     break;
+                case PresentViewApiClient.STANDARD_LOGIN:
+                    standardLogin();
+                    break;
+                case PresentViewApiClient.VERIFY_TOKEN:
+                    verifyToken();
+                    break;
+                case PresentViewApiClient.GET_NEXT_QUESTIONS:
+                    getNextQuestions();
+                    break;
+                case PresentViewApiClient.GET_REVISION:
+                    getRevision();
+                    break;
+                case PresentViewApiClient.SEND_ANSWER:
+                    sendAnswer();
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,9 +75,28 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
     }
 
     private void registerFromGoogle() {
-
         throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/register-from-google", RegisterFromGoogleResult.class);
+    }
 
+    private void standardLogin() {
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/standard-login", StandardLoginResult.class);
+    }
+
+    private void verifyToken() {
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/verify-token", VerifyTokenResult.class);
+    }
+
+    private void getNextQuestions() {
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/get-next-questions", GetNextQuestionsResult.class);
+    }
+
+    private void getRevision() {
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/get-revision", RevisionResult.class);
+
+    }
+
+    private void sendAnswer() {
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/send-answer", AnswerSentResult.class);
     }
 
     private void throwRequest(String url, final Class returnClass) {
@@ -73,7 +108,8 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                        Log.d(TAG, response.toString());
                         Object objectResult = gson.fromJson(response.toString(), returnClass);
                         jsonApiRequestListener.jsonApiRequestResult(objectResult);
                     }
@@ -91,4 +127,6 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
 
         SingletonRequestQueue.getInstance(context).add(jsObjRequest);
     }
+
+
 }

@@ -11,6 +11,14 @@ public class PresentViewApiClient {
 
     public static final int LOGIN_BY_GOOGLE= 1;
     public static final int REGISTER_FROM_GOOGLE= 2;
+    public static final int STANDARD_LOGIN = 3;
+    public static final int VERIFY_TOKEN = 4;
+    public static final int GET_NEXT_QUESTIONS = 5;
+    public static final int GET_REVISION = 6;
+    public static final int SEND_ANSWER = 7;
+
+
+
 
 
     private JsonApiRequestListener jsonApiRequestListener;

@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':circleprogress1'
+project(':circleprogress1').projectDir = new File('circleprogress')

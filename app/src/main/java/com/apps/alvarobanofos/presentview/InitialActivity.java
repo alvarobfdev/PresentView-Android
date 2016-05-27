@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.apps.alvarobanofos.presentview.Helpers.Login;
 import com.apps.alvarobanofos.presentview.Helpers.Registration;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -35,25 +37,40 @@ public class InitialActivity extends AppCompatActivity implements SignInFragment
     private String userEmail;
     private  String simId;
     private int userGender;
+    private boolean creating = false;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
+        creating = true;
 
         if(checkAllPermissions()) {
-
-            continueCreating();
+            Login.getInstance().loginIfUserLogged(this, this);
         }
-
-
 
     }
 
-    private void continueCreating() {
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if(!creating) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        creating = false;
+    }
+
+    public void continueCreating() {
         setContentView(R.layout.activity_initial);
+
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -104,7 +121,7 @@ public class InitialActivity extends AppCompatActivity implements SignInFragment
     private void startSignInFragment() {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.addToBackStack("initialScreen");
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_down, R.anim.slide_in_up, R.anim.slide_out_down);
+        fragmentTransaction.setCustomAnimations(R.animator.slide_in_up, R.animator.slide_out_down, R.animator.slide_in_up, R.animator.slide_out_down);
         fragmentTransaction.replace(R.id.layoutInitial, SignInFragment.newInstance(mGoogleApiClient), "signInFragment");
         fragmentTransaction.commit();
     }
@@ -154,11 +171,17 @@ public class InitialActivity extends AppCompatActivity implements SignInFragment
             result = false;
         }
 
-        if(permissionToRequest.size() > 0)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            result = false;
+        }
+
+        if(permissionToRequest.size() > 0) {
             ActivityCompat.requestPermissions(this,
                     permissionToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_ID);
 
+        }
         return result;
     }
 

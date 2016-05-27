@@ -11,9 +11,8 @@
     <string name="select_municipio">Seleccione Municipio</string>
     <string name="complete_data">Completar perfil</string>
     <string name="fail_form">Faltan datos por completar!</string>
-
-
-
+    <string name="user">Usuario</string>
+    <string name="pass">Contraseña</string>
     <string name="error_404">Ops! Hay algún cable suelto.\nEstamos trabajando en ello!</string>
     <string name="error_400">Ops! Fallo al conectar!\nProbablemente se esté haciendo un uso indebido de la aplicación</string>
 
@@ -21,5 +20,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_questions">PresentView</string>
+    <string name="title_activity_answers">AnswersActivity</string>
+
+    <string name="question_finished">La pregunta se cerró el %s</string>
+    <string name="question_starts_at">La pregunta comenzará el %s</string>
+    <string name="confirm_answer">Confirmar la opción \"%s\"</string>
+
 
 </resources>
