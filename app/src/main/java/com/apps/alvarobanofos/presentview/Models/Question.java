@@ -20,20 +20,25 @@ public class Question {
     public static final int TIME_END = 3;
     public static final int DURATION = 4;
     public static final int FINISHED = 5;
+    public static final int PRIZE = 6;
+    public static final int PRIZE_TITLE = 7;
+
 
 
     String title;
     Date time_ini;
     int duration, id;
     ArrayList<Answer> answers;
-    boolean finished = false;
+    boolean finished = false, prize;
+    String prize_title;
 
-    public Question(int id, String title, Date time_ini, int duration, int finished) {
+    public Question(int id, String title, Date time_ini, int duration, int finished, int prize, String prize_title) {
         this.title = title;
         this.time_ini = time_ini;
         this.duration = duration;
         this.id = id;
         this.finished = (finished > 0);
+        this.prize = (prize > 0);
     }
 
     public String getTitle() {
@@ -76,6 +81,22 @@ public class Question {
         this.answers = answers;
     }
 
+    public boolean isPrize() {
+        return prize;
+    }
+
+    public void setPrize(boolean prize) {
+        this.prize = prize;
+    }
+
+    public String getPrize_title() {
+        return prize_title;
+    }
+
+    public void setPrize_title(String prize_title) {
+        this.prize_title = prize_title;
+    }
+
     public String[] getSimpleDataSet() {
         Log.d("Question", getTime_ini().getTime()+"");
         Log.d("Question", DateParser.now()+"");
@@ -105,8 +126,13 @@ public class Question {
                         cursor.getString(Question.TITLE),
                         DateParser.getDateFromString(cursor.getString(Question.TIME_INI), DateParser.DEFAULT_SQL_DATETIME_PATTERN),
                         cursor.getInt(Question.DURATION),
-                        cursor.getInt(Question.FINISHED)
+                        cursor.getInt(Question.FINISHED),
+                        cursor.getInt(Question.PRIZE),
+                        cursor.getString(Question.PRIZE_TITLE)
                 );
+
+
+
                 questions.add(question);
             }
             cursor.close();

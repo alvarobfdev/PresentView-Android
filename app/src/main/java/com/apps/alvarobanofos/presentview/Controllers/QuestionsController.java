@@ -105,6 +105,13 @@ public class QuestionsController {
         if(question.isFinished())
             values.put("finished", 1);
         else values.put("finished", 0);
+
+        if(question.isPrize()) {
+            values.put("prize", 1);
+            values.put("prize_title", question.getPrize_title());
+        }
+        else values.put("prize", 0);
+
         resolver.update(Uri.parse(PresentViewContentProvider.URL_QUESTIONS + "/" + question.getId()), values, null, null);
         updateAnswers(question);
     }
@@ -135,6 +142,13 @@ public class QuestionsController {
         if(question.isFinished())
             values.put("finished", 1);
         else values.put("finished", 0);
+
+        if(question.isPrize()) {
+            values.put("prize", 1);
+            values.put("prize_title", question.getPrize_title());
+        }
+        else values.put("prize", 0);
+
         resolver.insert(PresentViewContentProvider.CONTENT_URI_QUESTION, values);
         addAnswers(question);
         setAlarm(question);
@@ -171,7 +185,9 @@ public class QuestionsController {
                     cursor.getString(Question.TITLE),
                     DateParser.getDateFromString(cursor.getString(Question.TIME_INI), DateParser.DEFAULT_SQL_DATETIME_PATTERN),
                     cursor.getInt(Question.DURATION),
-                    cursor.getInt(Question.FINISHED)
+                    cursor.getInt(Question.FINISHED),
+                    cursor.getInt(Question.PRIZE),
+                    cursor.getString(Question.PRIZE_TITLE)
             );
             cursor.close();
 

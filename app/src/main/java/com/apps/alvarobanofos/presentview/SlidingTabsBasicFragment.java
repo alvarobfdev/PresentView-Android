@@ -57,7 +57,7 @@ public class SlidingTabsBasicFragment extends Fragment {
      * resources.
      */
 
-    private CustomController currentController;
+    private CustomController[] currentController = {null, null, null, null, null};
     private int currentPosition;
 
     @Override
@@ -84,8 +84,9 @@ public class SlidingTabsBasicFragment extends Fragment {
 
             Log.d("Sliding", "Message received");
 
-            if(currentController != null) {
-                currentController.onMessageReceived(intent);
+            if(currentController.length > 0) {
+                for(CustomController controller : currentController)
+                    controller.onMessageReceived(intent);
             }
             else {
                 Log.d("Sliding", "No current Controller");
@@ -168,18 +169,18 @@ public class SlidingTabsBasicFragment extends Fragment {
          */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-
+            CustomController controller;
             switch(position) {
                 case 0:
-                    currentController = new NextQuestionsController(getActivity(), container);
-                    currentPosition = position;
-                    currentController.onCreate();
-                    return currentController.getView();
+                    controller = new NextQuestionsController(getActivity(), container);
+                    currentController[position]=controller;
+                    controller.onCreate();
+                    return controller.getView();
                 case 1:
-                    currentController = new RankingController(getActivity(), container);
-                    currentPosition = position;
-                    currentController.onCreate();
-                    return currentController.getView();
+                    controller = new RankingController(getActivity(), container);
+                    currentController[position]=controller;
+                    controller.onCreate();
+                    return controller.getView();
                 case 2:
                 case 3:
                 case 4:
@@ -195,10 +196,9 @@ public class SlidingTabsBasicFragment extends Fragment {
          */
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            if(currentPosition==position) {
-                currentController.onDestroy();
-                currentController = null;
-            }
+            CustomController controller = currentController[position];
+            controller.onDestroy();
+            currentController[position] = null;
             container.removeView((View) object);
             Log.i(LOG_TAG, "destroyItem() [position: " + position + "]");
 
@@ -214,9 +214,10 @@ public class SlidingTabsBasicFragment extends Fragment {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
                 new IntentFilter("questionsChanged"));
 
-        if(currentController != null) {
-            currentController.onMessageReceived(new Intent());
-        }
+        for(CustomController controller : currentController)
+            if(controller != null) {
+                controller.onMessageReceived(new Intent());
+            }
     }
 
     public void onPause() {
