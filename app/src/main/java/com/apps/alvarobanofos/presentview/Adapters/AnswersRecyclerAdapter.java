@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.apps.alvarobanofos.presentview.ConfirmAnswerDialog;
+import com.apps.alvarobanofos.presentview.Dialogs.ConfirmAnswerDialog;
 import com.apps.alvarobanofos.presentview.Helpers.DateParser;
 import com.apps.alvarobanofos.presentview.Helpers.ImageLoader;
 import com.apps.alvarobanofos.presentview.Models.Question;

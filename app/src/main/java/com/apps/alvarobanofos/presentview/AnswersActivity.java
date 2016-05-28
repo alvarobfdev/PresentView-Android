@@ -16,9 +16,13 @@ import android.widget.TextView;
 
 import com.apps.alvarobanofos.presentview.Adapters.AnswersRecyclerAdapter;
 import com.apps.alvarobanofos.presentview.Controllers.QuestionsController;
+import com.apps.alvarobanofos.presentview.Dialogs.QuestionWithPrizeDialog;
+import com.apps.alvarobanofos.presentview.Dialogs.WinnerDialog;
 import com.apps.alvarobanofos.presentview.Helpers.DateParser;
+import com.apps.alvarobanofos.presentview.Helpers.DbHelper;
 import com.apps.alvarobanofos.presentview.Models.Answer;
 import com.apps.alvarobanofos.presentview.Models.Question;
+import com.apps.alvarobanofos.presentview.Models.User;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 public class AnswersActivity extends AppCompatActivity {
@@ -49,12 +53,23 @@ public class AnswersActivity extends AppCompatActivity {
         setContentView(R.layout.answers_layout);
 
         questionId = getIntent().getIntExtra("questionId", 1);
+        question = QuestionsController.getInstance(this).getQuestion(questionId);
+
+        if(question.isPrize()) {
+            advisePrize();
+        }
+
         loadView();
 
     }
 
     private void loadView() {
         question = QuestionsController.getInstance(this).getQuestion(questionId);
+
+        if(question.isWinner()) {
+            adviseWinner();
+        }
+
         Log.d(TAG, "FINISHED: "+question.isFinished());
 
         tv_title = (TextView) findViewById(R.id.tv_answers_question_title);
@@ -186,5 +201,22 @@ public class AnswersActivity extends AppCompatActivity {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("questionsChanged"));
+    }
+
+    private void advisePrize() {
+        QuestionWithPrizeDialog confirmAnswerDialog = QuestionWithPrizeDialog.newInstance(
+                question.getPrize_title()
+        );
+        confirmAnswerDialog.show(getFragmentManager(), "fragment_prize_dialog");
+    }
+
+    private void adviseWinner() {
+        User user = DbHelper.getInstance(this).getUser();
+        WinnerDialog confirmAnswerDialog = WinnerDialog.newInstance(
+                question.getPrize_title(),
+                question.getWinner_name(),
+                (question.getWinner_user_id() == user.getUser_id())
+        );
+        confirmAnswerDialog.show(getFragmentManager(), "fragment_prize_dialog");
     }
 }

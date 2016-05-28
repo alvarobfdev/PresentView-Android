@@ -22,23 +22,28 @@ public class Question {
     public static final int FINISHED = 5;
     public static final int PRIZE = 6;
     public static final int PRIZE_TITLE = 7;
-
+    public static final int WINNER = 8;
+    public static final int WINNER_USER_ID = 9;
+    public static final int WINNER_NAME = 10;
 
 
     String title;
     Date time_ini;
-    int duration, id;
+    int duration, id, winner_user_id;
     ArrayList<Answer> answers;
-    boolean finished = false, prize;
-    String prize_title;
+    boolean finished = false;
+    boolean prize, winner;
+    String prize_title, winner_name;
 
-    public Question(int id, String title, Date time_ini, int duration, int finished, int prize, String prize_title) {
+    public Question(int id, String title, Date time_ini, int duration, int finished, int prize, String prize_title, int winner) {
         this.title = title;
         this.time_ini = time_ini;
         this.duration = duration;
         this.id = id;
         this.finished = (finished > 0);
         this.prize = (prize > 0);
+        this.prize_title = prize_title;
+        this.winner = (winner > 0);
     }
 
     public String getTitle() {
@@ -97,6 +102,30 @@ public class Question {
         this.prize_title = prize_title;
     }
 
+    public int getWinner_user_id() {
+        return winner_user_id;
+    }
+
+    public void setWinner_user_id(int winner_user_id) {
+        this.winner_user_id = winner_user_id;
+    }
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
+
+    public String getWinner_name() {
+        return winner_name;
+    }
+
+    public void setWinner_name(String winner_name) {
+        this.winner_name = winner_name;
+    }
+
     public String[] getSimpleDataSet() {
         Log.d("Question", getTime_ini().getTime()+"");
         Log.d("Question", DateParser.now()+"");
@@ -111,7 +140,8 @@ public class Question {
         else {
             status = "Finalizado";
         }
-        String[] dataSet = {getTitle(), status, ""+getId()};
+        Log.d("QUESTION", isPrize()+"");
+        String[] dataSet = {getTitle(), status, ""+getId(), isPrize()+""};
         return dataSet;
 
     }
@@ -128,10 +158,14 @@ public class Question {
                         cursor.getInt(Question.DURATION),
                         cursor.getInt(Question.FINISHED),
                         cursor.getInt(Question.PRIZE),
-                        cursor.getString(Question.PRIZE_TITLE)
+                        cursor.getString(Question.PRIZE_TITLE),
+                        cursor.getInt(Question.WINNER)
                 );
 
-
+                if(question.isWinner()) {
+                    question.setWinner_user_id(cursor.getInt(Question.WINNER_USER_ID));
+                    question.setWinner_name(cursor.getString(Question.WINNER_NAME));
+                }
 
                 questions.add(question);
             }

@@ -45,6 +45,7 @@ public class DbHelper {
         contentValues.put("birthdate", user.getBirthdate().toString());
         contentValues.put("sim_id", user.getSim_id());
         contentValues.put("token", user.getToken());
+        contentValues.put("user_id", user.getUser_id());
 
         //si hay un usuario...
         if (cursor != null && cursor.moveToFirst()) {
@@ -79,6 +80,7 @@ public class DbHelper {
         user.setProvincia(cursor.getInt(User.PROVINCIA_COLUMN));
         user.setSim_id(cursor.getString(User.SIM_ID_COLUMN));
         user.setToken(cursor.getString(User.TOKEN_COLUMN));
+        user.setUser_id(cursor.getInt(User.USER_ID));
         cursor.close();
         return user;
 

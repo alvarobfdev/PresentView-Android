@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/questions_selector"
+    android:minHeight="60dp"
     android:clickable="true"
     android:focusable="true">
 
@@ -13,35 +14,35 @@
         android:padding="10dp">
 
 
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_prize"
+            android:id="@+id/imageView5" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/tv_question_item_title"
+            android:id="@+id/tv_prize_title"
             android:text="¿Quién quieres que sea el nuevo presidente del Gobierno?"
             android:layout_weight="0.8"
             android:textColor="@color/colorLights"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="61dp"
             android:text="19/01/2016\n18:00h"
-            android:id="@+id/tv_question_item_datetime"
+            android:id="@+id/tv_datetime_prize_question"
             android:layout_weight="0.2"
             android:textColor="@color/colorSecondLights"
             android:layout_gravity="end"
             android:textAlignment="textEnd" />
-    </LinearLayout>
 
-    <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:id="@+id/iv_prize"
-        android:src="@drawable/ic_prize"
-        android:visibility="invisible"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apps.alvarobanofos.presentview.AnswersActivity;
@@ -77,6 +78,14 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
         TextView question_datetime = (TextView) view.findViewById(R.id.tv_question_item_datetime);
         question_title.setText(mDataset.get(position)[0]);
         question_datetime.setText(mDataset.get(position)[1]);
+        boolean prize = Boolean.valueOf(mDataset.get(position)[3]);
+        if(prize) {
+            ImageView prize_iv = (ImageView) view.findViewById(R.id.iv_prize);
+            prize_iv.setVisibility(View.VISIBLE);
+
+        }
+
+
 
     }
 

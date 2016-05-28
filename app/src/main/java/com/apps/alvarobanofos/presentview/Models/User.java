@@ -19,11 +19,12 @@ public class User implements Serializable {
     public static int BIRTHDATE_COLUMN = 6;
     public static int SIM_ID_COLUMN = 7;
     public static int TOKEN_COLUMN = 8;
+    public static int USER_ID = 9;
 
 
 
     String google_id, email, sim_id, token;
-    int gender, provincia, ciudad;
+    int gender, provincia, ciudad, user_id;
     Date birthdate;
 
     public String getEmail() {
@@ -88,5 +89,13 @@ public class User implements Serializable {
 
     public void setGoogle_id(String google_id) {
         this.google_id = google_id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }

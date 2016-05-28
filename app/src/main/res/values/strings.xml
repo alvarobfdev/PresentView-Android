@@ -26,6 +26,9 @@
     <string name="question_finished">La pregunta se cerró el %s</string>
     <string name="question_starts_at">La pregunta comenzará el %s</string>
     <string name="confirm_answer">Confirmar la opción \"%s\"</string>
+    <string name="question_prize">Si contentas a esta pregunta, podrás ganar el siguiente premio:\n\n\<b>%s</b></string>
+    <string name="other_winner" formatted="false">El usuario ganador del premio \"%s\" es:\n\n<b>%s</b>\n\nRecuerda: Cuantas más preguntas contestes, más posibilidades de premio</string>
+    <string name="me_winner"><b>¡¡¡ENHORABUENA!!!</b>\n\n Eres el ganador del premio \"%s\".\n\nEn unos días nos pondremos en contacto contigo para concretar la entrega del premio. ¡FELICIDADES!</string>
 
 
 </resources>

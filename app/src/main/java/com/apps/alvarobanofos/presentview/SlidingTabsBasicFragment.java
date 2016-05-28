@@ -86,7 +86,8 @@ public class SlidingTabsBasicFragment extends Fragment {
 
             if(currentController.length > 0) {
                 for(CustomController controller : currentController)
-                    controller.onMessageReceived(intent);
+                    if(controller != null)
+                        controller.onMessageReceived(intent);
             }
             else {
                 Log.d("Sliding", "No current Controller");
@@ -197,8 +198,10 @@ public class SlidingTabsBasicFragment extends Fragment {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             CustomController controller = currentController[position];
-            controller.onDestroy();
-            currentController[position] = null;
+            if(controller != null) {
+                controller.onDestroy();
+                currentController[position] = null;
+            }
             container.removeView((View) object);
             Log.i(LOG_TAG, "destroyItem() [position: " + position + "]");
 

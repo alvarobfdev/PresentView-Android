@@ -1,4 +1,4 @@
-package com.apps.alvarobanofos.presentview;
+package com.apps.alvarobanofos.presentview.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,10 +6,12 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.apps.alvarobanofos.presentview.AnswersActivity;
 import com.apps.alvarobanofos.presentview.Helpers.DateParser;
 import com.apps.alvarobanofos.presentview.Helpers.DbHelper;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.AnswerSentResult;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.PresentViewApiClient;
+import com.apps.alvarobanofos.presentview.R;
 
 import org.json.JSONObject;
 

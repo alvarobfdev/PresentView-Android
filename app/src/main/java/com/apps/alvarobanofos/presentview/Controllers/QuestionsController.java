@@ -51,7 +51,6 @@ public class QuestionsController {
                         GetNextQuestionsResult getNextQuestionsResult = (GetNextQuestionsResult) object;
                         updateQuestions(getNextQuestionsResult.getQuestions());
                         sendQuestionChangedEvent();
-
                     }
                 };
 
@@ -101,7 +100,6 @@ public class QuestionsController {
         values.put("title", question.getTitle());
         values.put("time_ini", DateParser.getStringFromLong(question.getTime_ini().getTime(), DateParser.DEFAULT_SQL_DATETIME_PATTERN));
         values.put("duration", question.getDuration());
-        values.put("duration", question.getDuration());
         if(question.isFinished())
             values.put("finished", 1);
         else values.put("finished", 0);
@@ -109,8 +107,15 @@ public class QuestionsController {
         if(question.isPrize()) {
             values.put("prize", 1);
             values.put("prize_title", question.getPrize_title());
+            if(question.isWinner()) {
+                values.put("winner", 1);
+                values.put("winner_user_id", question.getWinner_user_id());
+                values.put("winner_name", question.getWinner_name());
+            }
         }
         else values.put("prize", 0);
+
+
 
         resolver.update(Uri.parse(PresentViewContentProvider.URL_QUESTIONS + "/" + question.getId()), values, null, null);
         updateAnswers(question);
@@ -133,6 +138,7 @@ public class QuestionsController {
     }
 
     private void addQuestion(Question question) {
+        Log.d("INSERTING QUESTION", question.getPrize_title()+"");
         ContentResolver resolver = context.getContentResolver();
         ContentValues values = new ContentValues();
         values.put("_id", question.getId());
@@ -146,6 +152,11 @@ public class QuestionsController {
         if(question.isPrize()) {
             values.put("prize", 1);
             values.put("prize_title", question.getPrize_title());
+            if(question.isWinner()) {
+                values.put("winner", 1);
+                values.put("winner_user_id", question.getWinner_user_id());
+                values.put("winner_name", question.getWinner_name());
+            }
         }
         else values.put("prize", 0);
 
@@ -187,8 +198,16 @@ public class QuestionsController {
                     cursor.getInt(Question.DURATION),
                     cursor.getInt(Question.FINISHED),
                     cursor.getInt(Question.PRIZE),
-                    cursor.getString(Question.PRIZE_TITLE)
+                    cursor.getString(Question.PRIZE_TITLE),
+                    cursor.getInt(Question.WINNER)
             );
+
+            if(question.isWinner()) {
+                question.setWinner_user_id(cursor.getInt(Question.WINNER_USER_ID));
+                question.setWinner_name(cursor.getString(Question.WINNER_NAME));
+            }
+
+
             cursor.close();
 
             question.setAnswers(getAnswersOfQuestion(id));
