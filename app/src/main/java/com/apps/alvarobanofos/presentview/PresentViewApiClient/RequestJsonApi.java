@@ -25,6 +25,7 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
     JSONObject jsonData;
     Context context;
     PresentViewApiClient.JsonApiRequestListener jsonApiRequestListener;
+    boolean transformResult;
 
     public RequestJsonApi(Context context) {
         this.context = context;
@@ -36,7 +37,7 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
             int apiType = (int) params[0];
             jsonData = (JSONObject) params[1];
             jsonApiRequestListener = (PresentViewApiClient.JsonApiRequestListener) params[2];
-
+            transformResult = (boolean) params[3];
 
             switch (apiType) {
                 case PresentViewApiClient.LOGIN_BY_GOOGLE:
@@ -59,6 +60,9 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
                     break;
                 case PresentViewApiClient.SEND_ANSWER:
                     sendAnswer();
+                    break;
+                case PresentViewApiClient.GET_RANKING:
+                    getRanking();
                     break;
             }
         } catch (Exception e) {
@@ -99,6 +103,10 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
         throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/send-answer", AnswerSentResult.class);
     }
 
+    private void getRanking() {
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/ranking", RankingResult.class);
+    }
+
     private void throwRequest(String url, final Class returnClass) {
 
         Log.d(TAG, jsonData.toString());
@@ -108,9 +116,12 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                        Log.d(TAG, response.toString());
-                        Object objectResult = gson.fromJson(response.toString(), returnClass);
+                        Object objectResult = response.toString();
+                        if(transformResult) {
+                            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                            Log.d(TAG, response.toString());
+                            objectResult = gson.fromJson(response.toString(), returnClass);
+                        }
                         jsonApiRequestListener.jsonApiRequestResult(objectResult);
                     }
                 }, new Response.ErrorListener() {

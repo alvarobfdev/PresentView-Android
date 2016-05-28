@@ -176,6 +176,10 @@ public class SlidingTabsBasicFragment extends Fragment {
                     currentController.onCreate();
                     return currentController.getView();
                 case 1:
+                    currentController = new RankingController(getActivity(), container);
+                    currentPosition = position;
+                    currentController.onCreate();
+                    return currentController.getView();
                 case 2:
                 case 3:
                 case 4:

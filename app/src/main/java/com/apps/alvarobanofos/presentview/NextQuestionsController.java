@@ -85,6 +85,7 @@ public class NextQuestionsController extends CustomController {
 
         mAdapter = new QuestionsRecyclerAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
+        Log.d("NQC", "COUNT: "+mAdapter.getItemCount());
         if(mAdapter.getItemCount() > 0) {
             noQuestionsLayout.setVisibility(View.GONE);
         }

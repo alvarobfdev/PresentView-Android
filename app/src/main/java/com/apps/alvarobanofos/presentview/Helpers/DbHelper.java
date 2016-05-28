@@ -11,6 +11,7 @@ import com.apps.alvarobanofos.presentview.Controllers.RevisionController;
 import com.apps.alvarobanofos.presentview.Models.Question;
 import com.apps.alvarobanofos.presentview.Models.User;
 import com.apps.alvarobanofos.presentview.Providers.PresentViewContentProvider;
+import com.apps.alvarobanofos.presentview.RankingController;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -117,7 +118,20 @@ public class DbHelper {
 
     public void updateDB(int revision) {
         (new RevisionController()).updateRevisionDB(context, revision);
+        (new RankingController()).updateRankingDB(context);
         QuestionsController.getInstance(context).updateQuestionsTable();
+    }
+
+    public String getRankingJson() {
+        ContentResolver resolver = context.getContentResolver();
+        Cursor cursor = resolver.query(PresentViewContentProvider.CONTENT_URI_RANKING, null, null, null, null);
+        if(cursor == null || !cursor.moveToFirst()) {
+            return "{}";
+        }
+
+        String ranking = cursor.getString(cursor.getColumnIndex("json"));
+        cursor.close();
+        return ranking;
     }
 
 

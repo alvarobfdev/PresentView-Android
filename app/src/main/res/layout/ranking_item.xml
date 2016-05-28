@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/questions_selector"
+    android:minHeight="60dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="1"
+                android:id="@+id/tv_position_ranking"
+                android:textAlignment="gravity"
+                android:gravity="center"
+                android:textColor="@color/colorLights"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignRight="@id/tv_position_ranking"
+                android:background="@color/colorSecondLights"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ico_user"
+            android:id="@+id/imageView2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/tv_user_ranking"
+            android:text="¿Quién quieres que sea el nuevo presidente del Gobierno?"
+            android:layout_weight="0.8"
+            android:textColor="@color/colorLights"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:text="19/01/2016\n18:00h"
+            android:id="@+id/tv_questions_ranking"
+            android:layout_weight="0.2"
+            android:textColor="@color/colorSecondLights"
+            android:layout_gravity="end"
+            android:textAlignment="textEnd" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorSecondLights"/>
+
+</LinearLayout>

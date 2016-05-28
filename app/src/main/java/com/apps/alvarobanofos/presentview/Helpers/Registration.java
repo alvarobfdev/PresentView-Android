@@ -24,7 +24,11 @@ public class Registration {
 
     public void registerByGoogleCompleteData(GoogleSignInAccount account, Person person, String simId, SignInFragment.OnFragmentInteractionListener listener) {
 
-        Object params[] = {InitialActivity.REGISTER_FROM_GOOGLE, account.getId(), account.getEmail(), person.getGender(), simId};
+        int gender = 0;
+        if(person!=null) {
+            gender = person.getGender();
+        }
+        Object params[] = {InitialActivity.REGISTER_FROM_GOOGLE, account.getId(), account.getEmail(), gender, simId};
         listener.onFragmentInteraction(SignInFragment.COMPLETE_DATA, params);
 
         /*CompleteRegisterData completeRegisterData = new CompleteRegisterData();

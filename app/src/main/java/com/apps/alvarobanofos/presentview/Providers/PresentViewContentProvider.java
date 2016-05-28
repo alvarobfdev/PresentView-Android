@@ -18,7 +18,7 @@ import android.support.annotation.Nullable;
 public class PresentViewContentProvider extends ContentProvider {
 
     private static final String DATABASE_NAME = "presentview.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
 
     private static final String DATABASE_CREATE_USER = "CREATE TABLE user (_id integer, google_id text, email text, gender integer, provincia integer, ciudad integer, birthdate text, sim_id text, token text);";
     private static final String DATABASE_DROP_USER = "DROP TABLE IF EXISTS user;";
@@ -32,8 +32,14 @@ public class PresentViewContentProvider extends ContentProvider {
     private static final String DATABASE_CREATE_REVISIONS = "CREATE TABLE revisions (_id integer primary key autoincrement, revision integer);";
     private static final String DATABASE_DROP_REVISIONS = "DROP TABLE IF EXISTS revisions;";
 
+    private static final String DATABASE_CREATE_RANKING = "CREATE TABLE ranking (_id integer primary key autoincrement, json text);";
+    private static final String DATABASE_DROP_RANKING = "DROP TABLE IF EXISTS ranking;";
+
     private static final String INSERT_REVISION = "INSERT INTO revisions (revision)" +
             "VALUES (1);";
+
+    private static final String INSERT_RANKING = "INSERT INTO ranking (json)" +
+            "VALUES ('{}');";
 
 
 
@@ -41,6 +47,8 @@ public class PresentViewContentProvider extends ContentProvider {
     private static final String TABLE_REVISION = "revisions";
     private static final String TABLE_ANSWERS = "possible_answers";
     private static final String TABLE_USER = "user";
+    private static final String TABLE_RANKING = "ranking";
+
 
     private static final String _ID = "_id";
 
@@ -53,12 +61,14 @@ public class PresentViewContentProvider extends ContentProvider {
     public static final String URL_ANSWERS = "content://" + PROVIDER_NAME + "/answers";
     public static final String URL_REVISIONS = "content://" + PROVIDER_NAME + "/revision";
     public static final String URL_USER = "content://" + PROVIDER_NAME + "/user";
+    public static final String URL_RANKING = "content://" + PROVIDER_NAME + "/ranking";
 
 
     public static final Uri CONTENT_URI_QUESTION = Uri.parse(URL_QUESTIONS);
     public static final Uri CONTENT_URI_ANSWERS = Uri.parse(URL_ANSWERS);
     public static final Uri CONTENT_URI_REVISIONS = Uri.parse(URL_REVISIONS);
     public static final Uri CONTENT_URI_USER = Uri.parse(URL_USER);
+    public static final Uri CONTENT_URI_RANKING = Uri.parse(URL_RANKING);
 
 
 
@@ -70,6 +80,8 @@ public class PresentViewContentProvider extends ContentProvider {
     static final int ANSWERS_ID = 4;
     static final int REVISION = 5;
     static final int USER = 6;
+    static final int RANKING = 7;
+
 
 
     // Mapeo de patrones de content URI a los valores definidos arriba
@@ -82,6 +94,8 @@ public class PresentViewContentProvider extends ContentProvider {
         uriMatcher.addURI(PROVIDER_NAME,"answers/#",ANSWERS_ID);
         uriMatcher.addURI(PROVIDER_NAME,"revision",REVISION);
         uriMatcher.addURI(PROVIDER_NAME, "user", USER);
+        uriMatcher.addURI(PROVIDER_NAME, "ranking", RANKING);
+
 
     }
 
@@ -100,6 +114,7 @@ public class PresentViewContentProvider extends ContentProvider {
             case QUESTIONS_ID:
             case REVISION:
             case USER:
+            case RANKING:
                 return "vnd.android.cursor.item/vnd."+PROVIDER_NAME;
 
             case ANSWERS_ID:
@@ -142,6 +157,9 @@ public class PresentViewContentProvider extends ContentProvider {
                 break;
             case REVISION:
                 table = TABLE_REVISION;
+                break;
+            case RANKING:
+                table = TABLE_RANKING;
                 break;
             case USER:
                 table = TABLE_USER;
@@ -236,6 +254,10 @@ public class PresentViewContentProvider extends ContentProvider {
                 table = TABLE_REVISION;
                 whereArgs[0] = "1";
                 break;
+            case RANKING:
+                table = TABLE_RANKING;
+                whereArgs[0] = "1";
+                break;
             case USER:
                 table = TABLE_USER;
                 whereArgs[0] = "1";
@@ -261,7 +283,10 @@ public class PresentViewContentProvider extends ContentProvider {
             db.execSQL(DATABASE_CREATE_ANSWERS);
             db.execSQL(DATABASE_CREATE_REVISIONS);
             db.execSQL(DATABASE_CREATE_USER);
+            db.execSQL(DATABASE_CREATE_RANKING);
             db.execSQL(INSERT_REVISION);
+            db.execSQL(INSERT_RANKING);
+
         }
 
         @Override
@@ -270,6 +295,7 @@ public class PresentViewContentProvider extends ContentProvider {
             db.execSQL(DATABASE_DROP_ANSWERS);
             db.execSQL(DATABASE_DROP_REVISIONS);
             db.execSQL(DATABASE_DROP_USER);
+            db.execSQL(DATABASE_DROP_RANKING);
             onCreate(db);
         }
     }

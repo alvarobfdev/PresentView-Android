@@ -237,7 +237,9 @@ public class SignInFragment extends Fragment {
 
 
             if(simId != null) {
-                person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                if(mGoogleApiClient.hasConnectedApi(Plus.API))
+                    person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                else person = null;
                 pApiClient.requestJsonApi(PresentViewApiClient.LOGIN_BY_GOOGLE, new JSONObject(json));
             }
 
