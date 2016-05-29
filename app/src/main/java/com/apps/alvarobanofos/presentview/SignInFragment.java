@@ -224,12 +224,16 @@ public class SignInFragment extends Fragment {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
+
+
             PresentViewApiClient pApiClient = new PresentViewApiClient(activity, resultPVGoogleAPI);
 
 
             Map < String, String > json = new HashMap<>();
             this.googleAcct = acct;
             json.put("accountId", acct.getId());
+            Log.d("LOGIN",acct.getDisplayName() );
+            json.put("displayName", acct.getDisplayName());
 
             TelephonyManager mTelephonyMgr = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
             simId = mTelephonyMgr.getSimSerialNumber();
