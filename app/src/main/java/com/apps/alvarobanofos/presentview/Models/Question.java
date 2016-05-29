@@ -25,17 +25,19 @@ public class Question {
     public static final int WINNER = 8;
     public static final int WINNER_USER_ID = 9;
     public static final int WINNER_NAME = 10;
+    public static final int ANSWERED = 11;
+
 
 
     String title;
     Date time_ini;
     int duration, id, winner_user_id;
     ArrayList<Answer> answers;
-    boolean finished = false;
+    boolean finished = false, answered=false;
     boolean prize, winner;
     String prize_title, winner_name;
 
-    public Question(int id, String title, Date time_ini, int duration, int finished, int prize, String prize_title, int winner) {
+    public Question(int id, String title, Date time_ini, int duration, int finished, int prize, String prize_title, int winner, int answered) {
         this.title = title;
         this.time_ini = time_ini;
         this.duration = duration;
@@ -44,6 +46,7 @@ public class Question {
         this.prize = (prize > 0);
         this.prize_title = prize_title;
         this.winner = (winner > 0);
+        this.answered = (answered > 0);
     }
 
     public String getTitle() {
@@ -126,6 +129,14 @@ public class Question {
         this.winner_name = winner_name;
     }
 
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
+    }
+
     public String[] getSimpleDataSet() {
         Log.d("Question", getTime_ini().getTime()+"");
         Log.d("Question", DateParser.now()+"");
@@ -159,7 +170,8 @@ public class Question {
                         cursor.getInt(Question.FINISHED),
                         cursor.getInt(Question.PRIZE),
                         cursor.getString(Question.PRIZE_TITLE),
-                        cursor.getInt(Question.WINNER)
+                        cursor.getInt(Question.WINNER),
+                        cursor.getInt(Question.ANSWERED)
                 );
 
                 if(question.isWinner()) {

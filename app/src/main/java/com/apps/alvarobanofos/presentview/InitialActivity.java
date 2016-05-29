@@ -1,10 +1,7 @@
 package com.apps.alvarobanofos.presentview;
 
-import android.Manifest;
 import android.app.FragmentTransaction;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.apps.alvarobanofos.presentview.Helpers.Login;
 import com.apps.alvarobanofos.presentview.Helpers.Registration;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -20,8 +16,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.ArrayList;
 
 public class InitialActivity extends FragmentActivity implements SignInFragment.OnFragmentInteractionListener,
         GoogleApiClient.OnConnectionFailedListener, CompleteDataFragment.OnCompleteDataFragmentListener {
@@ -47,11 +41,8 @@ public class InitialActivity extends FragmentActivity implements SignInFragment.
         super.onCreate(savedInstanceState);
         FirebaseMessaging.getInstance().subscribeToTopic("global");
         creating = true;
-
-        if(checkAllPermissions()) {
-            Login.getInstance().loginIfUserLogged(this, this);
-        }
-
+        setContentView(R.layout.splash_screen);
+        continueCreating();
     }
 
     @Override
@@ -157,57 +148,7 @@ public class InitialActivity extends FragmentActivity implements SignInFragment.
 
     }
 
-    private boolean checkAllPermissions() {
 
-        ArrayList<String> permissionToRequest = new ArrayList<String>();
-
-        boolean result = true;
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            permissionToRequest.add(Manifest.permission.READ_PHONE_STATE);
-            result = false;
-        }
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            result = false;
-        }
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SET_ALARM) != PackageManager.PERMISSION_GRANTED) {
-            permissionToRequest.add(Manifest.permission.SET_ALARM);
-            result = false;
-        }
-
-        if(permissionToRequest.size() > 0) {
-            ActivityCompat.requestPermissions(this,
-                    permissionToRequest.toArray(new String[0]),
-                    REQUEST_PERMISSIONS_ID);
-
-        }
-        return result;
-    }
-
-    /* Metodo que recoge el resultado asincrono de la
-        solicitud de permisos en caso de ser aceptados
-        reinicia actividad para volver a cargar elementos
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        boolean permission_granted = true;
-        if(requestCode == REQUEST_PERMISSIONS_ID) {
-            for (int grantResult : grantResults) {
-                if (grantResult == PackageManager.PERMISSION_DENIED) {
-                    permission_granted = false;
-                }
-            }
-        }
-
-        if(permission_granted) {
-            continueCreating();
-        }
-
-    }
 
     @Override
     public void onCompleteDataInteraction(Object... paramsForm) {

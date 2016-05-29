@@ -23,6 +23,7 @@ import com.apps.alvarobanofos.presentview.Receivers.OnetimeAlarmReceiver;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +58,7 @@ public class QuestionsController {
         PresentViewApiClient pvApi = new PresentViewApiClient(context, jsonApiRequestListener);
 
         Map< String, String > json = new HashMap<>();
-        json.put("void", "void");
+        json.put("token", DbHelper.getInstance(context).getUser().getToken());
 
         pvApi.requestJsonApi(PresentViewApiClient.GET_NEXT_QUESTIONS, new JSONObject(json));
 
@@ -69,8 +70,25 @@ public class QuestionsController {
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    private void addPrizedQuestions(ArrayList<Question> questions) {
+        ContentResolver resolver = context.getContentResolver();
+
+        String selection = "winner_user_id = ? ";
+        String selectionArgs[] = {DbHelper.getInstance(context).getUser().getUser_id()+""};
+        Cursor cursor = resolver.query(PresentViewContentProvider.CONTENT_URI_QUESTION, null, selection, selectionArgs, null);
+        ArrayList<Question> questionsToAdd = Question.getQuestionsFromCursor(cursor);
+
+        for(Question questionToAdd : questionsToAdd) {
+            if(!questions.contains(questionToAdd)) {
+                questions.add(questionToAdd);
+            }
+        }
+    }
+
     private void updateQuestions(ArrayList<Question> remoteQuestions) {
         ArrayList<Question> localQuestions = DbHelper.getInstance(context).getNextQuestions();
+
+        addPrizedQuestions(localQuestions);
 
         for(Question remoteQuestion : remoteQuestions) {
             if(localQuestions.contains(remoteQuestion)) {
@@ -114,6 +132,10 @@ public class QuestionsController {
             }
         }
         else values.put("prize", 0);
+
+        if(question.isAnswered()) {
+            values.put("answered", 1);
+        }
 
 
 
@@ -199,7 +221,8 @@ public class QuestionsController {
                     cursor.getInt(Question.FINISHED),
                     cursor.getInt(Question.PRIZE),
                     cursor.getString(Question.PRIZE_TITLE),
-                    cursor.getInt(Question.WINNER)
+                    cursor.getInt(Question.WINNER),
+                    cursor.getInt(Question.ANSWERED)
             );
 
             if(question.isWinner()) {
@@ -266,6 +289,27 @@ public class QuestionsController {
 
     }
 
+    public ArrayList<Question> getLostQuestions() {
+        ContentResolver resolver = context.getContentResolver();
+        String time = DateParser.getStringFromLong(new Date().getTime(), DateParser.DEFAULT_SQL_DATETIME_PATTERN);
+        String selection = "answered = ? AND time_ini < ?";
+        String args[] = {"0", time};
+        String orderBy = "time_ini DESC";
+        Cursor cursor = resolver.query(PresentViewContentProvider.CONTENT_URI_QUESTION, null, selection, args, orderBy);
+        ArrayList<Question> questions = Question.getQuestionsFromCursor(cursor);
+        return questions;
+    }
+
+    public ArrayList<Question> getAnsweredQuestions() {
+        ContentResolver resolver = context.getContentResolver();
+        String time = DateParser.getStringFromLong(new Date().getTime(), DateParser.DEFAULT_SQL_DATETIME_PATTERN);
+        String selection = "answered = ? AND time_ini < ?";
+        String args[] = {"1", time};
+        String orderBy = "time_ini DESC";
+        Cursor cursor = resolver.query(PresentViewContentProvider.CONTENT_URI_QUESTION, null, selection, args, orderBy);
+        ArrayList<Question> questions = Question.getQuestionsFromCursor(cursor);
+        return questions;
+    }
 
 
 

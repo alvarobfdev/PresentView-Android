@@ -27,8 +27,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorLights"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_alignStart="@+id/textView4" />
+            android:layout_alignLeft="@+id/tv_noquestions_down"
+            android:layout_alignStart="@+id/tv_noquestions_down" />
 
         <TextView
             android:layout_width="wrap_content"

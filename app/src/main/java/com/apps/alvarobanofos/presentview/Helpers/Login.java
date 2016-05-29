@@ -22,7 +22,6 @@ public class Login {
     private static Login login = null;
 
     Context context;
-    InitialActivity activity;
 
     private PresentViewApiClient.JsonApiRequestListener jsonApiRequestListener = new PresentViewApiClient.JsonApiRequestListener() {
         @Override
@@ -33,7 +32,8 @@ public class Login {
                 loginUser(context, user);
             }
             else {
-                activity.continueCreating();
+                Intent intent = new Intent(context, InitialActivity.class);
+                context.startActivity(intent);
             }
         }
 
@@ -56,14 +56,14 @@ public class Login {
         context.startActivity(intent);
     }
 
-    public void  loginIfUserLogged(Context context, InitialActivity activity) {
+    public void  loginIfUserLogged(Context context) {
 
         this.context = context;
-        this.activity = activity;
 
         User user = DbHelper.getInstance(context).getUser();
         if(user == null) {
-            activity.continueCreating();
+            Intent intent = new Intent(context, InitialActivity.class);
+            context.startActivity(intent);
             return;
         }
 

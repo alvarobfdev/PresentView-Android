@@ -22,20 +22,20 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Aquí aparecen las próximas preguntas"
-            android:id="@+id/textView3"
+            android:id="@+id/tv_noquestions_up"
             android:textAlignment="center"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorLights"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_alignStart="@+id/textView4" />
+            android:layout_alignLeft="@+id/tv_noquestions_down"
+            android:layout_alignStart="@+id/tv_noquestions_down" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Ahora mismo no hay preguntas. En unos instantes, ¡nuevos temas para votar!"
-            android:id="@+id/textView4"
+            android:id="@+id/tv_noquestions_down"
             android:textColor="@color/colorSecondLights"
             android:textAlignment="center"
             android:layout_centerVertical="true"

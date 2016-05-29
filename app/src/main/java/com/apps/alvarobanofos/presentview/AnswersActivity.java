@@ -55,7 +55,7 @@ public class AnswersActivity extends AppCompatActivity {
         questionId = getIntent().getIntExtra("questionId", 1);
         question = QuestionsController.getInstance(this).getQuestion(questionId);
 
-        if(question.isPrize()) {
+        if(question.isPrize() && !question.isFinished()) {
             advisePrize();
         }
 
@@ -120,7 +120,7 @@ public class AnswersActivity extends AppCompatActivity {
     }
 
     private void activateDonut(final long timeEnd, long timeStart) {
-        textEnded.setVisibility(View.INVISIBLE);
+        textEnded.setVisibility(View.GONE);
         donutProgress.setSuffixText("s");
         long remainingTime = timeEnd-timeStart;
         donutProgress.setMax((int) (remainingTime));
@@ -146,7 +146,7 @@ public class AnswersActivity extends AppCompatActivity {
     }
 
     private void changeDonutPerText(String string, String time_ini) {
-        donutProgress.setVisibility(View.INVISIBLE);
+        donutProgress.setVisibility(View.GONE);
         String textEnd = String.format(string, time_ini);
         textEnded.setText(textEnd);
         textEnded.setVisibility(View.VISIBLE);
@@ -156,7 +156,7 @@ public class AnswersActivity extends AppCompatActivity {
 
 
     private void changeDonutPerText(String string) {
-        donutProgress.setVisibility(View.INVISIBLE);
+        donutProgress.setVisibility(View.GONE);
         textEnded.setText(string);
         textEnded.setVisibility(View.VISIBLE);
     }
@@ -186,6 +186,7 @@ public class AnswersActivity extends AppCompatActivity {
             }
         }
         question.setFinished(true);
+        question.setAnswered(true);
         QuestionsController.getInstance(this).updateQuestion(question);
         QuestionsController.getInstance(this).sendQuestionChangedEvent();
     }

@@ -28,9 +28,9 @@
             android:text="¿Quién quieres que sea el nuevo presidente del Gobierno?"
             android:layout_weight="0.8"
             android:textColor="@color/colorLights"
-            android:textSize="16dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="5dp" />
+            android:textSize="20dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"

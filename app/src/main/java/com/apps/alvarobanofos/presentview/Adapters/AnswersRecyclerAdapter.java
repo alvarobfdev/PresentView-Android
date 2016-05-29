@@ -2,6 +2,7 @@ package com.apps.alvarobanofos.presentview.Adapters;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,7 +102,9 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
         ImageLoader imgLoader = new ImageLoader(view.getContext());
 
         if(selectable) {
-            answer_title.setTextColor(activity.getResources().getColor(R.color.colorSecondaryButton));
+            //answer_title.setTextColor(activity.getResources().getColor(R.color.colorSecondaryButton));
+            view.setPressed(true);
+            view.setSelected(true);
         }
 
         if(mDataset.get(position)[1].length() > 0) {
@@ -116,13 +119,18 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
         progressBar.setVisibility(View.GONE);
         textView.setVisibility(View.GONE);
         if(question.isFinished()) {
+            View divider = view.findViewById(R.id.answer_divider);
+            divider.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
+            progressBar.getIndeterminateDrawable().setColorFilter(activity.getResources().getColor(R.color.colorLights), PorterDuff.Mode.MULTIPLY);
             textView.setVisibility(View.VISIBLE);
             setPercetages(progressBar, textView, Double.valueOf(mDataset.get(position)[3]));
 
             if(selectable) {
                 view.setSelected(true);
             }
+
+
 
         }
 

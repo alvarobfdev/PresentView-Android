@@ -174,17 +174,19 @@ public class SlidingTabsBasicFragment extends Fragment {
             switch(position) {
                 case 0:
                     controller = new NextQuestionsController(getActivity(), container);
-                    currentController[position]=controller;
-                    controller.onCreate();
-                    return controller.getView();
+                    return createController(position, controller);
                 case 1:
                     controller = new RankingController(getActivity(), container);
-                    currentController[position]=controller;
-                    controller.onCreate();
-                    return controller.getView();
+                    return createController(position, controller);
                 case 2:
+                    controller = new PrizesController(getActivity(), container);
+                    return createController(position, controller);
                 case 3:
+                    controller = new LostQuestionsController(getActivity(), container);
+                    return createController(position, controller);
                 case 4:
+                    controller = new AnsweredQuestionsController(getActivity(), container);
+                    return createController(position, controller);
                 default:
 
             }
@@ -209,6 +211,12 @@ public class SlidingTabsBasicFragment extends Fragment {
 
 
 
+    }
+
+    private Object createController(int position, CustomController controller) {
+        currentController[position]=controller;
+        controller.onCreate();
+        return controller.getView();
     }
 
     @Override

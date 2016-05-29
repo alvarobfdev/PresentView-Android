@@ -4,17 +4,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.apps.alvarobanofos.presentview.PresentViewApiClient.RankingResult;
+import com.apps.alvarobanofos.presentview.Helpers.DateParser;
+import com.apps.alvarobanofos.presentview.Models.Question;
 import com.apps.alvarobanofos.presentview.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by alvarobanofos on 21/5/16.
  */
-public class RankingRecyclerAdapter extends RecyclerView.Adapter<RankingRecyclerAdapter.ViewHolder> {
-    private RankingResult mDataset;
+public class PrizesRecyclerAdapter extends RecyclerView.Adapter<PrizesRecyclerAdapter.ViewHolder> {
+    private ArrayList<Question> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -32,19 +34,19 @@ public class RankingRecyclerAdapter extends RecyclerView.Adapter<RankingRecycler
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RankingRecyclerAdapter(RankingResult myDataset) {
+    public PrizesRecyclerAdapter(ArrayList<Question> myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public RankingRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                int viewType) {
+    public PrizesRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                               int viewType) {
 
 
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ranking_item, parent, false);
+                .inflate(R.layout.prize_item, parent, false);
 
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
@@ -57,28 +59,24 @@ public class RankingRecyclerAdapter extends RecyclerView.Adapter<RankingRecycler
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final View view = holder.view;
-        TextView user = (TextView) view.findViewById(R.id.tv_user_ranking);
-        TextView numberQuestions = (TextView) view.findViewById(R.id.tv_questions_ranking);
-        TextView positionTv = (TextView) view.findViewById(R.id.tv_position_ranking);
-        String userStr = mDataset.getRankings().get(position).getUser();
-        String numQuestions = mDataset.getRankings().get(position).getNumQuestions()+" preguntas.";
-        String positionStr = mDataset.getRankings().get(position).getPosition()+"";
+        TextView prize = (TextView) view.findViewById(R.id.tv_prize_title);
+        TextView datetime = (TextView) view.findViewById(R.id.tv_datetime_prize_question);
 
-        if(mDataset.getRankings().get(position).isMe()) {
-            LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.ll_ranking_layout);
-            linearLayout.setSelected(true);
-            linearLayout.setPressed(true);
-            userStr = "(YO)" + userStr;
-        }
-        positionTv.setText(positionStr);
-        user.setText(userStr);
-        numberQuestions.setText(numQuestions);
+        String prizeStr = mDataset.get(position).getPrize_title();
+        String datetimeStr = DateParser.getStringFromLong(
+                mDataset.get(position).getTime_ini().getTime(),
+                "dd/MM/yyyy\nHH:mm"
+        );
+
+        prize.setText(prizeStr);
+        datetime.setText(datetimeStr);
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.getRankings().size();
+        return mDataset.size();
     }
 }
 
