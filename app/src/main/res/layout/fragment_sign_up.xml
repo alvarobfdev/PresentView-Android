@@ -9,12 +9,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimaryDark"
+        android:layout_gravity="right|top">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="25dp"
-            android:text="@string/iniciar_sesion"
+            android:text="@string/registrarse"
             android:textColor="#ffffff"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -23,78 +24,78 @@
             android:textSize="@dimen/abc_text_size_large_material"
             android:textAllCaps="true"
             android:layout_marginTop="10dp"
-            android:id="@+id/textView" />
+            android:id="@+id/textView20" />
 
         <com.google.android.gms.common.SignInButton
-            android:id="@+id/google_sign_in_button"
+            android:id="@+id/google_sign_up_button"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/textView20"
             android:layout_marginTop="38dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:text="@string/google_signin_button_text"
+            android:text="@string/google_signup_button_text"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ó"
-            android:id="@+id/textView2"
-            android:layout_below="@+id/google_sign_in_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:id="@+id/textView21"
             android:textColor="#ffffff"
-            android:textSize="@dimen/abc_select_dialog_padding_start_material" />
+            android:textSize="@dimen/abc_select_dialog_padding_start_material"
+            android:layout_below="@+id/google_sign_up_button"
+            android:layout_marginTop="20dp"
+
+            android:layout_centerHorizontal="true" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:id="@+id/et_user"
+            android:id="@+id/et_correo"
+            android:layout_marginTop="20dp"
             android:hint="@string/mail"
             android:inputType="textEmailAddress"
             style="@style/itemsForms"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/textView21"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp" />
+            android:layout_alignParentEnd="true" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#80d3d3d3"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/et_user"
-            android:layout_alignParentRight="true"
             android:id="@+id/separator1"
-            android:layout_alignParentEnd="true" />
+            android:layout_below="@+id/et_correo"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:id="@+id/et_pass"
+            android:id="@+id/et_pass_signup"
             android:inputType="textPassword"
+            android:hint="@string/pass"
             android:layout_below="@+id/separator1"
+
+            style="@style/itemsForms"
+            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:hint="@string/pass"
-            style="@style/itemsForms"
-            />
+            android:layout_alignParentEnd="true" />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:text="@string/iniciar_sesion"
-            android:id="@+id/btnSignIn"
+            android:text="@string/registrarse"
+            android:id="@+id/btnSignUp"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/secondary_button_selector"
-            android:layout_below="@+id/et_pass"
+            android:layout_below="@+id/et_pass_signup"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
     </RelativeLayout>

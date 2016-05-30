@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.apps.alvarobanofos.presentview.Adapters.GenderAdapter;
 import com.apps.alvarobanofos.presentview.Adapters.MunicipiosAdapter;
 import com.apps.alvarobanofos.presentview.Adapters.ProvinciasAdapter;
 import com.apps.alvarobanofos.presentview.Helpers.MunicipiosFactory;
@@ -36,19 +37,22 @@ import java.util.Arrays;
 public class CompleteDataFragment extends android.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_NAME = "name";
+    private static final String ARG_TYPE_REGISTER = "typeRegister";
+    private static final String ARG_GENDER = "userGender";
+
     private Context applicationContext;
     private OnCompleteDataFragmentListener mListener;
 
     Spinner spinner_provincias;
-    Spinner spinner_municipios;
+    Spinner spinner_municipios, spinner_gender;
     Button btnCompleteData;
-    EditText editTextBirthdate;
+    EditText editTextBirthdate, editTextName, editTextSurname;
+    String name;
+    int gender;
+    int typeRegister;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
 
 
     public CompleteDataFragment() {
@@ -56,21 +60,27 @@ public class CompleteDataFragment extends android.app.Fragment {
     }
 
 
-    public static CompleteDataFragment newInstance() {
-        //CompleteDataFragment fragment = new CompleteDataFragment();
-        /*Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);*/
-        return new CompleteDataFragment();
+    public static CompleteDataFragment newInstance(String name, int typeRegister, int userGender) {
+
+        CompleteDataFragment fragment = new CompleteDataFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_NAME, name);
+        args.putInt(ARG_TYPE_REGISTER, typeRegister);
+        args.putInt(ARG_GENDER, userGender);
+        fragment.setArguments(args);
+        return fragment;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            name = getArguments().getString(ARG_NAME);
+            typeRegister = getArguments().getInt(ARG_TYPE_REGISTER);
+            gender = getArguments().getInt(ARG_GENDER);
+
         }
     }
 
@@ -79,13 +89,28 @@ public class CompleteDataFragment extends android.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_complete_date, container, false);
+        String nameParts[] = name.split(" ");
+
+        name = nameParts[0];
+        String surname = "";
+        for(int i=1; i<nameParts.length; i++) {
+            surname += nameParts[i];
+        }
+
         applicationContext = getActivity().getApplicationContext();
         spinner_provincias = (Spinner) view.findViewById(R.id.sp_provincias);
         spinner_municipios = (Spinner) view.findViewById(R.id.sp_municipios);
         spinner_municipios.setVisibility(View.INVISIBLE);
         btnCompleteData = (Button) view.findViewById(R.id.btnCompleteData);
         editTextBirthdate = (EditText) view.findViewById(R.id.et_birthdate);
+        editTextName = (EditText) view.findViewById(R.id.et_complete_data_name);
+        editTextSurname = (EditText) view.findViewById(R.id.et_complete_data_surname);
+        spinner_gender = (Spinner) view.findViewById(R.id.sp_gender);
 
+        editTextName.setText(name);
+        editTextSurname.setText(surname);
+
+        loadGender();
         loadProvincias();
         loadProvinciasEvent();
         btnCompleteDataEvent();
@@ -131,6 +156,19 @@ public class CompleteDataFragment extends android.app.Fragment {
         });
     }
 
+    private void loadGender() {
+        ArrayList<String> genders = new ArrayList<>();
+        genders.add("Hombre");
+        genders.add("Mujer");
+
+        GenderAdapter genderAdapter = new GenderAdapter(applicationContext, R.layout.custom_spinner, genders);
+        spinner_gender.setAdapter(genderAdapter);
+
+        if(gender < 2) {
+            spinner_gender.setSelection(gender);
+        }
+    }
+
     private void loadMunicipios(int provinciaId) {
         try {
             ArrayList<Municipio> AllMunicipios = new ArrayList<Municipio>(Arrays.asList(MunicipiosFactory.load(getActivity().getApplicationContext())));
@@ -159,6 +197,9 @@ public class CompleteDataFragment extends android.app.Fragment {
                             editTextBirthdate.getText().toString(),
                             ((Provincia) spinner_provincias.getSelectedItem()).getId(),
                             ((Municipio) spinner_municipios.getSelectedItem()).getCMUN(),
+                            spinner_gender.getSelectedItemPosition(),
+                            editTextName.getText().toString(),
+                            editTextSurname.getText().toString()
                     };
                     mListener.onCompleteDataInteraction(params);
                 } else {
@@ -177,7 +218,10 @@ public class CompleteDataFragment extends android.app.Fragment {
                 provincia != null &&
                 provincia.getId() > 0 &&
                 municipio != null &&
-                municipio.getCMUN() > 0);
+                municipio.getCMUN() > 0 &&
+                editTextName.getText().toString().length() > 0 &&
+                editTextSurname.getText().toString().length() > 0
+        );
 
 
 

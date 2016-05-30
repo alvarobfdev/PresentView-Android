@@ -17,6 +17,8 @@ public class PresentViewApiClient {
     public static final int GET_REVISION = 6;
     public static final int SEND_ANSWER = 7;
     public static final int GET_RANKING = 8;
+    public static final int STANDARD_REGISTRATION = 9;
+    public static final int STANDARD_REGISTRATION_COMPLETE = 10;
 
 
 

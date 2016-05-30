@@ -64,6 +64,12 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
                 case PresentViewApiClient.GET_RANKING:
                     getRanking();
                     break;
+                case PresentViewApiClient.STANDARD_REGISTRATION:
+                    standardRegistration();
+                    break;
+                case PresentViewApiClient.STANDARD_REGISTRATION_COMPLETE:
+                    standardRegistrationComplete();
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,6 +90,14 @@ public class RequestJsonApi extends AsyncTask<Object, Void, Void> {
 
     private void standardLogin() {
         throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/standard-login", StandardLoginResult.class);
+    }
+
+    private void standardRegistration() {
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/standard-registration", StandardRegistration.class);
+    }
+
+    private void standardRegistrationComplete() {
+        throwRequest("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/api/standard-registration-complete", StandardRegistration.class);
     }
 
     private void verifyToken() {

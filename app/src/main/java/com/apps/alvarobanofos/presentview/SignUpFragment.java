@@ -20,7 +20,7 @@ import com.apps.alvarobanofos.presentview.Helpers.Notifications;
 import com.apps.alvarobanofos.presentview.Helpers.Registration;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.LoginByGoogleResult;
 import com.apps.alvarobanofos.presentview.PresentViewApiClient.PresentViewApiClient;
-import com.apps.alvarobanofos.presentview.PresentViewApiClient.StandardLoginResult;
+import com.apps.alvarobanofos.presentview.PresentViewApiClient.StandardRegistration;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -38,12 +38,12 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SignInFragment.OnFragmentInteractionListener} interface
+ * {@link SignUpFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SignInFragment#newInstance} factory method to
+ * Use the {@link SignUpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignInFragment extends Fragment {
+public class SignUpFragment extends Fragment {
 
     private static final String TAG = "SignInFragment";
     private static final int RC_SIGN_IN = 9001;
@@ -58,7 +58,9 @@ public class SignInFragment extends Fragment {
     private Context context;
     private Activity activity;
 
-    private OnFragmentInteractionListener mListener;
+    private SignInFragment.OnFragmentInteractionListener mListener;
+
+
 
     private PresentViewApiClient.JsonApiRequestListener resultPVGoogleAPI = new PresentViewApiClient.JsonApiRequestListener() {
         @Override
@@ -67,7 +69,7 @@ public class SignInFragment extends Fragment {
             if(loginByGoogleResult.getStatus() == 1) {
                 if(!loginByGoogleResult.isRegistered()) {
 
-                    Registration.getInstance().registerByGoogleCompleteData(googleAcct, person, simId, mListener, null);
+                    Registration.getInstance().registerByGoogleCompleteData(googleAcct, person, simId, mListener, etUser.getText().toString());
                 }
                 else {
                     Login.getInstance().loginUser(activity, loginByGoogleResult.getUser());
@@ -80,23 +82,27 @@ public class SignInFragment extends Fragment {
     private PresentViewApiClient.JsonApiRequestListener resultPVStandardReg = new PresentViewApiClient.JsonApiRequestListener() {
         @Override
         public void jsonApiRequestResult(Object object) {
-            StandardLoginResult standardLoginResult = (StandardLoginResult) object;
-            if(standardLoginResult.getStatus() == 1) {
-                if(!standardLoginResult.isRegistered()) {
-                    Notifications.singleToast(context, "Usuario y/o contraseña no válidos!");
+            StandardRegistration standardRegistration = (StandardRegistration) object;
+            if(standardRegistration.getStatus() == 1) {
+                if(standardRegistration.isRegistered_yet()) {
+                    if(standardRegistration.isNot_data_completed()) {
+                        Registration.getInstance().registerByGoogleCompleteData(null, null, simId, mListener, etUser.getText().toString());
+                    }
+                    else Notifications.singleToast(context, "Email ya registrado!");
                 }
-                else if (standardLoginResult.is_google_account()) {
-                    Notifications.singleToast(context, "Modo de autentificación erróneo!");
+                else if (standardRegistration.isRegistrated()) {
+                    Registration.getInstance().registerByGoogleCompleteData(null, null, simId, mListener, etUser.getText().toString());
+
                 }
                 else {
-                    Login.getInstance().loginUser(activity, standardLoginResult.getUser());
+                    Notifications.singleToast(context, "Fallo al registrar!");
                 }
 
             }
         }
     };
 
-    public SignInFragment() {
+    public SignUpFragment() {
         // Required empty public constructor
     }
 
@@ -117,8 +123,8 @@ public class SignInFragment extends Fragment {
      * @return A new instance of fragment SignInFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SignInFragment newInstance(GoogleApiClient param1) {
-        SignInFragment fragment = new SignInFragment();
+    public static SignUpFragment newInstance(GoogleApiClient param1) {
+        SignUpFragment fragment = new SignUpFragment();
         fragment.setmGoogleApiClient(param1);
         return fragment;
     }
@@ -135,24 +141,24 @@ public class SignInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        SignInButton googleButton = (SignInButton) view.findViewById(R.id.google_sign_in_button);
-        setGooglePlusButtonText(googleButton, getString(R.string.google_signin_button_text));
+        SignInButton googleButton = (SignInButton) view.findViewById(R.id.google_sign_up_button);
+        setGooglePlusButtonText(googleButton, getString(R.string.google_signup_button_text));
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                googleSignIn();
+                googleSignUp();
             }
         });
-        Button signInBtn = (Button) view.findViewById(R.id.btnSignIn);
-        etUser = (EditText) view.findViewById(R.id.et_user);
-        etPass = (EditText) view.findViewById(R.id.et_pass);
+        Button signInBtn = (Button) view.findViewById(R.id.btnSignUp);
+        etUser = (EditText) view.findViewById(R.id.et_correo);
+        etPass = (EditText) view.findViewById(R.id.et_pass_signup);
 
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                standardSignIn();
+                standardSignUp();
             }
         });
 
@@ -170,8 +176,8 @@ public class SignInFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof SignInFragment.OnFragmentInteractionListener) {
+            mListener = (SignInFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -187,22 +193,9 @@ public class SignInFragment extends Fragment {
 
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(int action, Object... params);
-    }
 
-    private void googleSignIn() {
+
+    private void googleSignUp() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -275,12 +268,15 @@ public class SignInFragment extends Fragment {
 
 
 
-    private void standardSignIn() {
+    private void standardSignUp() {
         if(etPass.getText().length() < 3 || etUser.getText().length() < 3) {
             Notifications.singleToast(context, "Datos incorrectos!");
         }
         else {
             Map < String, String > json = new HashMap<>();
+            TelephonyManager mTelephonyMgr = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+            simId = mTelephonyMgr.getSimSerialNumber();
+            json.put("simId", simId);
             json.put("user", etUser.getText().toString());
             json.put("pass", etPass.getText().toString());
 
@@ -289,7 +285,7 @@ public class SignInFragment extends Fragment {
                     resultPVStandardReg
             );
 
-            presentViewApiClient.requestJsonApi(PresentViewApiClient.STANDARD_LOGIN, new JSONObject(json));
+            presentViewApiClient.requestJsonApi(PresentViewApiClient.STANDARD_REGISTRATION, new JSONObject(json));
         }
 
 

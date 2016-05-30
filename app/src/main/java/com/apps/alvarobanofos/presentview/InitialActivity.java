@@ -2,6 +2,7 @@ package com.apps.alvarobanofos.presentview;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -25,11 +26,13 @@ public class InitialActivity extends FragmentActivity implements SignInFragment.
     public final static int REGISTER_FROM_FORM = 2;
 
     Button btnSignIn;
+    Button btnSignUp;
+
     private GoogleApiClient mGoogleApiClient;
     private int typeRegister;
 
     private String userGoogleId;
-    private String userEmail;
+    private String userEmail, name;
     private  String simId;
     private int userGender;
     private boolean creating = false;
@@ -43,6 +46,9 @@ public class InitialActivity extends FragmentActivity implements SignInFragment.
         creating = true;
         setContentView(R.layout.splash_screen);
         continueCreating();
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+
     }
 
     @Override
@@ -82,6 +88,15 @@ public class InitialActivity extends FragmentActivity implements SignInFragment.
                 startSignInFragment();
             }
         });
+
+        btnSignUp = (Button) findViewById(R.id.btnRegistro);
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSignUpFragment();
+            }
+        });
+
     }
 
     @Override
@@ -114,10 +129,18 @@ public class InitialActivity extends FragmentActivity implements SignInFragment.
         fragmentTransaction.commit();
     }
 
+    private void startSignUpFragment() {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.addToBackStack("initialScreen");
+        fragmentTransaction.setCustomAnimations(R.animator.slide_in_up, R.animator.slide_out_down, R.animator.slide_in_up, R.animator.slide_out_down);
+        fragmentTransaction.replace(R.id.layoutInitial, SignUpFragment.newInstance(mGoogleApiClient), "signUpFragment");
+        fragmentTransaction.commit();
+    }
+
     private void startCompleteDataFragment(String backStack) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.addToBackStack(backStack);
-        fragmentTransaction.replace(R.id.layoutInitial, CompleteDataFragment.newInstance(), "completeDataFragment");
+        fragmentTransaction.replace(R.id.layoutInitial, CompleteDataFragment.newInstance(name, typeRegister, userGender), "completeDataFragment");
         fragmentTransaction.commit();
     }
 
@@ -129,6 +152,8 @@ public class InitialActivity extends FragmentActivity implements SignInFragment.
             userEmail = (String) params[2];
             userGender = (int) params[3];
             simId = (String) params[4];
+            name = (String) params[5];
+
             startCompleteDataFragment("signInFragment");
         }
     }
@@ -156,13 +181,30 @@ public class InitialActivity extends FragmentActivity implements SignInFragment.
             Object[] params = {
                     userGoogleId,
                     userEmail,
-                    userGender,
+                    (int) paramsForm[3], //Gender
                     (String) paramsForm[0],
                     (int) paramsForm[1],
                     (int) paramsForm[2],
-                    simId
+                    simId,
+                    (String) paramsForm[4], //nombre
+                    (String) paramsForm[5] //apellidos
             };
             Registration.getInstance().registerWithGoogle(this, params);
+        }
+
+        if(typeRegister == REGISTER_FROM_FORM) {
+            Object[] params = {
+                    userEmail, //Email
+                    (int) paramsForm[3], //Gender
+                    (String) paramsForm[0], //Birthdate
+                    (int) paramsForm[1], //Provincia
+                    (int) paramsForm[2], //Municipio
+                    simId, //SIm
+                    (String) paramsForm[4], //nombre
+                    (String) paramsForm[5] //apellidos
+            };
+
+            Registration.getInstance().standardRegister(this, params);
         }
     }
 

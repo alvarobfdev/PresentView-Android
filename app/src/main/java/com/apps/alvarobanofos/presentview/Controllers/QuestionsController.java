@@ -292,7 +292,7 @@ public class QuestionsController {
     public ArrayList<Question> getLostQuestions() {
         ContentResolver resolver = context.getContentResolver();
         String time = DateParser.getStringFromLong(new Date().getTime(), DateParser.DEFAULT_SQL_DATETIME_PATTERN);
-        String selection = "answered = ? AND time_ini < ?";
+        String selection = "answered = ? AND time_ini < ? AND winner = 0";
         String args[] = {"0", time};
         String orderBy = "time_ini DESC";
         Cursor cursor = resolver.query(PresentViewContentProvider.CONTENT_URI_QUESTION, null, selection, args, orderBy);
@@ -303,7 +303,7 @@ public class QuestionsController {
     public ArrayList<Question> getAnsweredQuestions() {
         ContentResolver resolver = context.getContentResolver();
         String time = DateParser.getStringFromLong(new Date().getTime(), DateParser.DEFAULT_SQL_DATETIME_PATTERN);
-        String selection = "answered = ? AND time_ini < ?";
+        String selection = "(answered = ? AND time_ini < ?) OR winner = 1";
         String args[] = {"1", time};
         String orderBy = "time_ini DESC";
         Cursor cursor = resolver.query(PresentViewContentProvider.CONTENT_URI_QUESTION, null, selection, args, orderBy);

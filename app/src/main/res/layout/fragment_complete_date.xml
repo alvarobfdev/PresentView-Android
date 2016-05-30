@@ -13,6 +13,53 @@
         android:paddingTop="20dp">
 
 
+        <EditText
+            style="@style/itemsForms"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/et_complete_data_name"
+            android:drawableLeft="@drawable/ic_date_range_white_24dp"
+            android:hint="@string/name"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80d3d3d3"
+            android:id="@+id/separator"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/et_complete_data_name"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <EditText
+            style="@style/itemsForms"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/et_complete_data_surname"
+            android:drawableLeft="@drawable/ic_date_range_white_24dp"
+            android:hint="@string/surname"
+            android:layout_below="@+id/separator"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80d3d3d3"
+            android:id="@+id/separator1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/et_complete_data_surname"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <EditText
             android:layout_width="fill_parent"
@@ -20,21 +67,18 @@
             android:inputType="date"
             android:ems="10"
             android:id="@+id/et_birthdate"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:drawableLeft="@drawable/ic_date_range_white_24dp"
             android:hint="@string/birthdate"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             style="@style/itemsForms"
-             />
+            android:layout_below="@+id/separator1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#80d3d3d3"
-            android:id="@+id/separator"
+            android:id="@+id/separator5"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/et_birthdate"
@@ -44,13 +88,33 @@
         <Spinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/sp_provincias"
+            android:id="@+id/sp_gender"
             android:background="@color/colorPrimary"
+            style="@style/itemsForms"
+            android:layout_below="@+id/separator5"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80d3d3d3"
+            android:id="@+id/separator2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/separator"
+            android:layout_below="@+id/sp_gender"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Spinner
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sp_provincias"
+            android:background="@color/colorPrimary"
             style="@style/itemsForms"
-            />
+            android:layout_below="@+id/separator2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <View
             android:layout_width="match_parent"
@@ -60,7 +124,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/sp_provincias"
             android:layout_alignParentRight="true"
-            android:id="@+id/separator1"
+            android:id="@+id/separator3"
             android:layout_alignParentEnd="true" />
 
         <Spinner
@@ -68,11 +132,22 @@
             android:layout_height="wrap_content"
             android:id="@+id/sp_municipios"
             android:background="@color/colorPrimary"
+            style="@style/itemsForms"
+            android:layout_below="@+id/separator3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#80d3d3d3"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/separator1"
-            style="@style/itemsForms"
-            />
+            android:layout_below="@+id/sp_municipios"
+            android:layout_alignParentRight="true"
+            android:id="@+id/separator4"
+            android:layout_alignParentEnd="true" />
+
         <Button
             android:layout_width="fill_parent"
             android:layout_height="60dp"
@@ -80,8 +155,11 @@
             android:id="@+id/btnCompleteData"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/secondary_button_selector"
-            android:layout_below="@id/sp_municipios"
-            />
+            android:layout_below="@+id/separator4"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
 
 
     </RelativeLayout>

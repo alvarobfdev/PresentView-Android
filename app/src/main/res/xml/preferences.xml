@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <EditTextPreference
+        android:key="pref_num_questions"
+        android:title="Número de preguntas por pantalla"
+        android:summary="10"
+        android:defaultValue="10"
+        />
+
+</PreferenceScreen>

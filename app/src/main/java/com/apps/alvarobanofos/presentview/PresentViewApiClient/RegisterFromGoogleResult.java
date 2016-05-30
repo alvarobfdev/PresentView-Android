@@ -7,6 +7,7 @@ import com.apps.alvarobanofos.presentview.Models.User;
  */
 public class RegisterFromGoogleResult extends ApiResult {
 
+    private boolean registered_ok;
     private boolean alreadyRegistered;
     User user;
 
@@ -24,5 +25,13 @@ public class RegisterFromGoogleResult extends ApiResult {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isRegistered_ok() {
+        return registered_ok;
+    }
+
+    public void setRegistered_ok(boolean registered_ok) {
+        this.registered_ok = registered_ok;
     }
 }

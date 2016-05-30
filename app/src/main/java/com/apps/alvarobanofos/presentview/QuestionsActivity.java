@@ -18,6 +18,7 @@
 package com.apps.alvarobanofos.presentview;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -81,7 +82,12 @@ public class QuestionsActivity extends SampleActivityBase {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        if(item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivityForResult(intent, 1001);
+        }
         return super.onOptionsItemSelected(item);
+
     }
 
 

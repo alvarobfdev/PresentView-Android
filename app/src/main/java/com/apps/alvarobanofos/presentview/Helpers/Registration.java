@@ -22,13 +22,28 @@ public class Registration {
 
     private static Registration registration = null;
 
-    public void registerByGoogleCompleteData(GoogleSignInAccount account, Person person, String simId, SignInFragment.OnFragmentInteractionListener listener) {
+    public void registerByGoogleCompleteData(GoogleSignInAccount account, Person person, String simId, SignInFragment.OnFragmentInteractionListener listener, String email) {
 
-        int gender = 0;
+        int gender = 2;
+        String name = "";
         if(person!=null) {
             gender = person.getGender();
         }
-        Object params[] = {InitialActivity.REGISTER_FROM_GOOGLE, account.getId(), account.getEmail(), gender, simId};
+        int type_register = InitialActivity.REGISTER_FROM_GOOGLE;
+        String id = "";
+        if(account == null) {
+            type_register = InitialActivity.REGISTER_FROM_FORM;
+        }
+        else {
+            id = account.getId();
+            if(email == null) {
+                email = account.getEmail();
+            }
+            name = account.getDisplayName();
+        }
+
+
+        Object params[] = {type_register, id, email, gender, simId, name};
         listener.onFragmentInteraction(SignInFragment.COMPLETE_DATA, params);
 
         /*CompleteRegisterData completeRegisterData = new CompleteRegisterData();
@@ -70,28 +85,46 @@ public class Registration {
         jsonData.put("provincia", ""+params[4]);
         jsonData.put("ciudad", ""+params[5]);
         jsonData.put("sim_id", (String) params[6]);
+        jsonData.put("name", ""+params[7]);
+        jsonData.put("surname", ""+params[8]);
+
+
 
         presentViewApiClient.requestJsonApi(PresentViewApiClient.REGISTER_FROM_GOOGLE, new JSONObject(jsonData));
     }
 
     public void standardRegister(final Context context, Object... params) {
-         PresentViewApiClient.JsonApiRequestListener resultSignIn = new PresentViewApiClient.JsonApiRequestListener() {
+         PresentViewApiClient.JsonApiRequestListener resultSignUp = new PresentViewApiClient.JsonApiRequestListener() {
             @Override
             public void jsonApiRequestResult(Object object) {
+                RegisterFromGoogleResult registerFromGoogleResult  = (RegisterFromGoogleResult) object;
+                if(registerFromGoogleResult.getStatus() == 1) {
+                    if(!registerFromGoogleResult.isRegistered_ok()) {
+                        Notifications.singleToast(context, registerFromGoogleResult.getMessage());
+                    }
+                    else {
+                        Login.getInstance().loginUser(context, registerFromGoogleResult.getUser());
+                    }
+                }
+                else {
+                    Notifications.singleToast(context, "Fallo al registrar! Vuelve a intentarlo en unos instantes.");
 
+                }
             }
         };
 
-        PresentViewApiClient presentViewApiClient = new PresentViewApiClient(context, resultSignIn);
+        PresentViewApiClient presentViewApiClient = new PresentViewApiClient(context, resultSignUp);
         Map<String, String> jsonData = new HashMap<>();
         jsonData.put("email", (String) params[0]);
-        jsonData.put("pass", (String) params[1]);
-        jsonData.put("gender", ""+params[2]);
-        jsonData.put("birthdate", (String) params[3]);
-        jsonData.put("provincia", ""+params[4]);
-        jsonData.put("ciudad", ""+params[5]);
-        jsonData.put("sim_id", (String) params[6]);
-        //presentViewApiClient.requestJsonApi(PresentViewApiClient.STANDARD_REGISTER, new JSONObject(jsonData));
+        jsonData.put("gender", ""+params[1]);
+        jsonData.put("birthdate", (String) params[2]);
+        jsonData.put("provincia", ""+params[3]);
+        jsonData.put("ciudad", ""+params[4]);
+        jsonData.put("sim_id", (String) params[5]);
+        jsonData.put("name", (String) params[6]);
+        jsonData.put("surname", (String) params[7]);
+
+        presentViewApiClient.requestJsonApi(PresentViewApiClient.STANDARD_REGISTRATION_COMPLETE, new JSONObject(jsonData));
     }
 
     public static Registration getInstance() {

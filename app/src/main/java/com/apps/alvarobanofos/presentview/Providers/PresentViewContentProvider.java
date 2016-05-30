@@ -18,7 +18,7 @@ import android.support.annotation.Nullable;
 public class PresentViewContentProvider extends ContentProvider {
 
     private static final String DATABASE_NAME = "presentview.db";
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 24;
 
     private static final String DATABASE_CREATE_USER = "CREATE TABLE user (_id integer, google_id text, email text, gender integer, provincia integer, ciudad integer, birthdate text, sim_id text, token text, user_id integer);";
     private static final String DATABASE_DROP_USER = "DROP TABLE IF EXISTS user;";
